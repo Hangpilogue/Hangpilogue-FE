@@ -33,8 +33,9 @@ const StHeader = styled.header`
 const StLeftHeader = styled.div``
 
 const StLogo = styled.div`
-  background-image: url("/static/images/logo.webp");
+  background-image: url("/static/images/logoImage.png");
   background-repeat: no-repeat;
+  background-size:contain;
   height: 41px;
   width: 128px;
   cursor: pointer
