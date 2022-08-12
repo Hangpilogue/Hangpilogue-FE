@@ -1,26 +1,29 @@
 import styled from "styled-components";
-import {RESP} from "../Mock/response";
+import { RESP } from "../Mock/response";
 
 function PostPage() {
-  const resp = RESP
-  console.log(resp)
+  const resp = RESP;
+  console.log(resp);
 
   return (
     <StPostPage>
       <StWrapper>
         <StPostTitle>
           <label htmlFor={"title"}>게시글 제목</label>
-          <input id={"title"} type="text"/>
+          <input id={"title"} type="text" />
         </StPostTitle>
         <StPostImage>
-          <StPostImageBox/>
-          <input id={"uploadImg"} value={"첨부파일"} placeholder={"첨부파일"}/>
+          <StPostImageBox />
+          <input id={"uploadImg"} value={"첨부파일"} placeholder={"첨부파일"} />
           <label htmlFor={"img"}>파일찾기</label>
-          <input id={"img"} type="file" placeholder={""}/>
+          <input id={"img"} type="file" placeholder={""} />
         </StPostImage>
         <StPostContent>
           <label htmlFor={"content"}>게시글 내용</label>
-          <textarea id={"content"} placeholder={"후기를 남겨주세요!"}></textarea>
+          <textarea
+            id={"content"}
+            placeholder={"후기를 남겨주세요!"}
+          ></textarea>
         </StPostContent>
         <StBtnBox>
           <StBtn color={"green"}>완료</StBtn>
@@ -29,7 +32,7 @@ function PostPage() {
       </StWrapper>
     </StPostPage>
   );
-};
+}
 
 const StOutline = styled.div`
   border: 1px solid #eee;
@@ -44,17 +47,17 @@ const StOutline = styled.div`
     font-weight: 700;
     padding-left: 10px;
   }
-`
+`;
 
 const StPostPage = styled.div`
   padding: 15px;
   display: flex;
   justify-content: center;
-`
+`;
 
 const StWrapper = styled.div`
   width: 60%;
-`
+`;
 
 const StPostTitle = styled(StOutline)`
   display: flex;
@@ -76,7 +79,7 @@ const StPostTitle = styled(StOutline)`
       outline: none;
     }
   }
-`
+`;
 
 const StPostImage = styled(StOutline)`
   margin-bottom: 10px;
@@ -120,17 +123,16 @@ const StPostImage = styled(StOutline)`
     border: 0;
     display: none;
   }
-`
+`;
 
 const StPostImageBox = styled.div`
   height: 300px;
   background-color: #7070c1;
   margin-bottom: 10px;
   border-radius: 5px;
-`
+`;
 
 const StPostContent = styled(StOutline)`
-
   & textarea {
     margin-top: 10px;
     width: 100%;
@@ -147,18 +149,18 @@ const StPostContent = styled(StOutline)`
       outline: none;
     }
   }
-`
+`;
 
 const StBtnBox = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
-`
+`;
 
 const StBtn = styled.button`
   width: 50%;
   border: none;
-    //background-color: ${(props) => props.color};
+  //background-color: ${(props) => props.color};
   background-color: #7070c1;
   padding: 10px 20px;
   border-radius: 10px;
@@ -167,6 +169,6 @@ const StBtn = styled.button`
   &:first-child {
     margin-right: 10px;
   }
-`
+`;
 
 export default PostPage;
