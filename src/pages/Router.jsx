@@ -9,6 +9,7 @@ import DetailPage from "./DetailPage";
 import EditPage from "./EditPage";
 import MyPage from "./MyPage";
 import Layout from "../components/common/Layout";
+import PostPage from "./PostPage";
 
 
 
@@ -26,6 +27,7 @@ function Router() {
                         <Route path="/" element={<CommunityPage />} />
                         <Route path="/login" element={<LogInPage />} />
                         <Route path="/*" element={<NotFound />} />
+                        <Route path="/post" element={<PostPage />} />
                         <Route path="/detail/:postId" element={<DetailPage />} />
                         <Route path="/edit/:postId" element={<EditPage />} />
                         <Route path="/mypage" element={<MyPage />} />

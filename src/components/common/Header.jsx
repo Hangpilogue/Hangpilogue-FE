@@ -1,23 +1,25 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 function Header(props) {
-    const navigate = useNavigate();
-    return (
-        <StHeader>
-            <StLeftHeader>
-                <StLogo onClick={()=> navigate("/")}></StLogo>
-            </StLeftHeader>
-            <StRightHeader>
-              <StNav>
-                <StNavUl>
-                    <StNavLi onClick={()=> navigate("/mypage")}>마이페이지</StNavLi>
-                    <StNavLi>로그아웃</StNavLi>
-                </StNavUl>
-              </StNav>
-            </StRightHeader>
-        </StHeader>
-    );
+  const navigate = useNavigate();
+  return (
+    <StHeader>
+      <StLeftHeader>
+        <StLogo onClick={() => navigate("/")}></StLogo>
+      </StLeftHeader>
+      <StRightHeader>
+        <StNav>
+          <StNavUl>
+            <StNavLi onClick={() => navigate("/mypage")}>마이페이지</StNavLi>
+            <StNavLi onClick={() => navigate("/post")}>포스트</StNavLi>
+            <StNavLi onClick={() => navigate("/detail/:postId")}>디테일</StNavLi>
+            <StNavLi onClick={() => navigate("/login")}>로그인</StNavLi>
+          </StNavUl>
+        </StNav>
+      </StRightHeader>
+    </StHeader>
+  );
 };
 
 
