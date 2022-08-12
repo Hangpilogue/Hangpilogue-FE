@@ -26,7 +26,7 @@ function Router() {
                         <Route path="/" element={<CommunityPage />} />
                         <Route path="/login" element={<LogInPage />} />
                         <Route path="/*" element={<NotFound />} />
-                        <Route path="/post/:postId" element={<DetailPage />} />
+                        <Route path="/detail/:postId" element={<DetailPage />} />
                         <Route path="/edit/:postId" element={<EditPage />} />
                         <Route path="/mypage" element={<MyPage />} />
                         
