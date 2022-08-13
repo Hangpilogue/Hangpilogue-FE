@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {getPost} from "../redux/modules/postSlice";
 
 function PostPage() {
+
   const dispatch = useDispatch()
   const a = useSelector(state => state)
   // console.log(a)
@@ -11,6 +12,7 @@ function PostPage() {
   useEffect(()=> {
     dispatch((getPost()))
   })
+
 
   return (
     <StPostPage>
