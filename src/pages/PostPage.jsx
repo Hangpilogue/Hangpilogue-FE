@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
+
 import {useEffect, useState} from "react";
 import {postPosts} from "../redux/modules/postSlice";
 import {useNavigate} from "react-router-dom";
@@ -48,6 +49,7 @@ function PostPage() {
     alert("포스팅 완료!")
     navigate("/")
   }
+
 
 
 
