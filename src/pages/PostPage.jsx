@@ -2,9 +2,10 @@ import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {postPosts} from "../redux/modules/postSlice";
-import imageCompression from "browser-image-compression";
+import {useNavigate} from "react-router-dom";
 
 function PostPage() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   //미리보기
@@ -44,6 +45,8 @@ function PostPage() {
 
   const onSubmitHandler = () => {
     dispatch(postPosts(posts))
+    alert("포스팅 완료!")
+    navigate("/")
   }
 
 
