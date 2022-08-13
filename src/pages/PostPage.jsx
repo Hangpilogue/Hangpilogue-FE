@@ -7,7 +7,7 @@ function PostPage() {
 
   const dispatch = useDispatch()
   const a = useSelector(state => state)
-  // console.log(a)
+  console.log(a)
 
   useEffect(()=> {
     dispatch((getPost()))
