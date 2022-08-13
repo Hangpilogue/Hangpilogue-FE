@@ -1,10 +1,18 @@
 import styled from "styled-components";
-import {RESP} from "../Mock/response";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {getPost} from "../redux/modules/postSlice";
 
 function PostPage() {
-  const resp = RESP
-  console.log(resp)
-  // console.log(resp.COMMERCIALS.result[0])
+
+  const dispatch = useDispatch()
+  const a = useSelector(state => state)
+  // console.log(a)
+
+  useEffect(()=> {
+    dispatch((getPost()))
+  })
+
 
   return (
     <StPostPage>
@@ -15,7 +23,7 @@ function PostPage() {
         </StPostTitle>
         <StPostImage>
           <StPostImageBox/>
-          <input id={"uploadImg"} value={"첨부파일"} placeholder={"첨부파일"}/>
+          <input id={"uploadImg"} defaultValue={"첨부파일"} placeholder={"첨부파일"}/>
           <label htmlFor={"img"}>파일찾기</label>
           <input id={"img"} type="file" placeholder={""}/>
         </StPostImage>
