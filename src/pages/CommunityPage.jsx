@@ -1,7 +1,20 @@
 import styled from "styled-components";
 import {FaRegCommentAlt} from "react-icons/fa";
+import CommunityList from "../components/community/CommunityList";
+import {useDispatch, useSelector} from "react-redux";
+import {getPosts} from "../redux/modules/postSlice";
+import {useEffect} from "react";
 
 function CommunityPage() {
+  const dispatch = useDispatch()
+
+  const postList = useSelector(state => state.postSlice)
+
+  // console.log(postList)
+
+  useEffect(()=> {
+    dispatch(getPosts())
+  },[])
 
   return (
     <StCommunityPage>
@@ -11,55 +24,11 @@ function CommunityPage() {
       </StBtnBox>
       <StPostBox>
         <StListUl>
-          <StListLi>
-            <div className="img"></div>
-            <div className="textBox">
-              <div className="title">제목입니다</div>
-              <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
-            </div>
-          </StListLi>
-          <StListLi>
-            <div className="img"></div>
-            <div className="textBox">
-              <div className="title">제목입니다</div>
-              <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
-            </div>
-          </StListLi>
-          <StListLi>
-            <div className="img"></div>
-            <div className="textBox">
-              <div className="title">제목입니다</div>
-              <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
-            </div>
-          </StListLi>
-          <StListLi>
-            <div className="img"></div>
-            <div className="textBox">
-              <div className="title">제목입니다</div>
-              <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
-            </div>
-          </StListLi>
-          <StListLi>
-            <div className="img"></div>
-            <div className="textBox">
-              <div className="title">제목입니다</div>
-              <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
-            </div>
-          </StListLi>
-          <StListLi>
-            <div className="img"></div>
-            <div className="textBox">
-              <div className="title">제목입니다</div>
-              <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
-            </div>
-          </StListLi>
-          <StListLi>
-            <div className="img"></div>
-            <div className="textBox">
-              <div className="title">제목입니다</div>
-              <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
-            </div>
-          </StListLi>
+          {
+            postList.map((data)=> (
+              <CommunityList {...data} key={data.id} />
+            ))
+          }
         </StListUl>
       </StPostBox>
     </StCommunityPage>
@@ -102,42 +71,6 @@ const StListUl = styled.ul`
   @media screen and (max-width: 1017px) {
     justify-content: space-evenly;
   }
-`
-
-const StListLi = styled.li`
-  width: 300px;
-  border-radius: 5px;
-  overflow: hidden;
-  margin: 10px;
-  & .img {
-    width: 100%;
-    height: 300px;
-    background-color: #7070c1;
-  }
-
-  & .textBox {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #777;
-    border-left: 1px solid #777;
-    border-right: 1px solid #777;
-    border-radius: 0 0 5px 5px;
-
-    & .title {
-      padding-right: 20px;
-    }
-  }
-
-  & .commentCount {
-    display: flex;
-    align-items: center;
-
-    & .commentIcon {
-      margin-right: 10px;
-    }
-  }
-
 `
 
 export default CommunityPage;

@@ -1,17 +1,57 @@
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {getPost} from "../redux/modules/postSlice";
+
+import {useEffect, useState} from "react";
+import {postPosts} from "../redux/modules/postSlice";
+import {useNavigate} from "react-router-dom";
 
 function PostPage() {
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const a = useSelector(state => state)
-  console.log(a)
 
-  useEffect(()=> {
-    dispatch((getPost()))
+
+  //미리보기
+  const [previewImg, setPreviewImg] = useState("https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png")
+  //파일 이름 placeholder
+  const [postFile, setPostFile] = useState("")
+  const [posts, setPosts] = useState({
+    title: "",
+    content: "",
+    nickname: "",
+    img:previewImg
   })
+
+  const {title, content} = posts
+  const onChangeHandler = (e) => {
+    const {value, name} = e.target
+    setPosts({
+      ...posts,
+      [name]: value
+    })
+  }
+
+  const handleFileOnChange = (event) => {
+    event.preventDefault();
+    let reader = new FileReader()
+    let file = event.target.files[0]
+    setPostFile(event.target.files[0])
+    reader.onloadend = () => {
+      setPreviewImg(reader.result)
+      setPosts({
+        ...posts,
+        img: reader.result
+      })
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const onSubmitHandler = () => {
+    dispatch(postPosts(posts))
+    alert("포스팅 완료!")
+    navigate("/")
+  }
+
+
 
 
   return (
@@ -19,20 +59,27 @@ function PostPage() {
       <StWrapper>
         <StPostTitle>
           <label htmlFor={"title"}>게시글 제목</label>
-          <input id={"title"} type="text"/>
+          <input name={"title"} value={title} onChange={onChangeHandler} id={"title"} type="text"/>
         </StPostTitle>
         <StPostImage>
-          <StPostImageBox/>
-          <input id={"uploadImg"} defaultValue={"첨부파일"} placeholder={"첨부파일"}/>
+          <StPostImageBox postImg={previewImg}/>
+          <input id={"uploadImg"} value={postFile.name || ""} onChange={() => {
+          }} placeholder={"첨부파일"}/>
           <label htmlFor={"img"}>파일찾기</label>
-          <input id={"img"} type="file" placeholder={""}/>
+          <input type='file'
+                 id={"img"}
+                 name={"img"}
+                 accept='image/jpg,impge/png,image/jpeg,image/gif'
+                 onChange={handleFileOnChange}>
+          </input>
         </StPostImage>
         <StPostContent>
           <label htmlFor={"content"}>게시글 내용</label>
-          <textarea id={"content"} placeholder={"후기를 남겨주세요!"}></textarea>
+          <textarea name={"content"} value={content} onChange={onChangeHandler} id={"content"}
+                    placeholder={"후기를 남겨주세요!"}></textarea>
         </StPostContent>
         <StBtnBox>
-          <StBtn color={"green"}>완료</StBtn>
+          <StBtn onClick={onSubmitHandler} color={"green"}>완료</StBtn>
           <StBtn color={"red"}>취소</StBtn>
         </StBtnBox>
       </StWrapper>
@@ -62,7 +109,7 @@ const StPostPage = styled.div`
 `
 
 const StWrapper = styled.div`
-  width: 60%;
+  width: 500px;
 `
 
 const StPostTitle = styled(StOutline)`
@@ -133,9 +180,12 @@ const StPostImage = styled(StOutline)`
 
 const StPostImageBox = styled.div`
   height: 300px;
-  background-color: #7070c1;
   margin-bottom: 10px;
   border-radius: 5px;
+  background-image: url(${(props) => (props.postImg)});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 `
 
 const StPostContent = styled(StOutline)`
@@ -167,11 +217,11 @@ const StBtnBox = styled.div`
 const StBtn = styled.button`
   width: 50%;
   border: none;
-    //background-color: ${(props) => props.color};
-  background-color: #7070c1;
+  background-color: ${(props) => props.color};
   padding: 10px 20px;
   border-radius: 10px;
   color: white;
+  cursor: pointer;
 
   &:first-child {
     margin-right: 10px;
