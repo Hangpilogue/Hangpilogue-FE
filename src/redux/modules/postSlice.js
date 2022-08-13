@@ -2,28 +2,42 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
 
-export const getPost = createAsyncThunk("GET_POST",  ()=> {
+
+const URL = "http://localhost:4000"
+
+export const getPosts = createAsyncThunk("GET_POSTS", async (posts)=> {
   try {
-    const response = axios.get("http://localhost:4000/posts")
-    console.log(response)
+    const response = await axios.get(URL + "/posts")
+    return response.data
+  }catch (err) {
+    console.log(err)
+  }
+})
+
+export const postPosts = createAsyncThunk("POST_POSTS", async (posts) => {
+  try {
+    const response = await axios.post(URL + "/posts", {...posts})
+
     return response.data
   } catch (err) {
     console.log(err)
   }
 })
 
+const initialState = []
 
-
-const initialState = ""
 
 export const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {},
   extraReducers: {
-    [getPost.fulfilled] : (state, action) => null
+
+    [getPosts.fulfilled]:(state, action) => [...action.payload],
+    [postPosts.fulfilled]: (state, action) => console.log("a"),
   }
 });
 
-export const {users} = postSlice.actions;
+export const {} = postSlice.actions;
+
 export default postSlice.reducer;
