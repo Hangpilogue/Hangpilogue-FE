@@ -4,6 +4,7 @@ import {RESP} from "../Mock/response";
 function PostPage() {
   const resp = RESP
   console.log(resp)
+  // console.log(resp.COMMERCIALS.result[0])
 
   return (
     <StPostPage>
