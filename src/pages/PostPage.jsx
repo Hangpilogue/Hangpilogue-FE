@@ -9,6 +9,7 @@ function PostPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+
   //미리보기
   const [previewImg, setPreviewImg] = useState("https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png")
   //파일 이름 placeholder
