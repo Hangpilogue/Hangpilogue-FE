@@ -34,7 +34,7 @@ export const postSlice = createSlice({
   extraReducers: {
 
     [getPosts.fulfilled]:(state, action) => [...action.payload],
-    [postPosts.fulfilled]: (state, action) => console.log("a"),
+    [postPosts.fulfilled]: (state, action) => [...state, action.payload],
   }
 });
 

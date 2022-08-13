@@ -4,23 +4,29 @@ import CommunityList from "../components/community/CommunityList";
 import {useDispatch, useSelector} from "react-redux";
 import {getPosts} from "../redux/modules/postSlice";
 import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 function CommunityPage() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const postList = useSelector(state => state.postSlice)
 
-  // console.log(postList)
+  console.log(postList)
 
   useEffect(()=> {
     dispatch(getPosts())
   },[])
 
+  const goPost = () => {
+    navigate("/post")
+  }
+
   return (
     <StCommunityPage>
       <StBtnBox>
         <button>게시글찾기</button>
-        <button>추가하기</button>
+        <button onClick={goPost}>추가하기</button>
       </StBtnBox>
       <StPostBox>
         <StListUl>

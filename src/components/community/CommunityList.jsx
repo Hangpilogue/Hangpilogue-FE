@@ -26,7 +26,7 @@ const StListLi = styled.li`
   border-radius: 5px;
   overflow: hidden;
   margin: 10px;
-
+  cursor: pointer;
   & .textBox {
     display: flex;
     justify-content: space-between;
