@@ -1,10 +1,6 @@
 import styled from "styled-components";
-import { RESP } from "../Mock/response";
 
 function PostPage() {
-  const resp = RESP;
-  console.log(resp);
-
   return (
     <StPostPage>
       <StWrapper>
