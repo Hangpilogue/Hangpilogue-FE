@@ -5,7 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {getPosts} from "../redux/modules/postSlice";
 
 function EditPage() {
-  const postList = useSelector((state) => state.postSlice)
+  const postList = useSelector((state) => state.postSlice.posts)
   const dispatch = useDispatch()
   const [originData, setOriginData] = useState()
   const {postId} = useParams()

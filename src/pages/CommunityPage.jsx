@@ -1,47 +1,67 @@
 import styled from "styled-components";
 import CommunityList from "../components/community/CommunityList";
 import {useDispatch, useSelector} from "react-redux";
-import {getPosts, getPosts2} from "../redux/modules/postSlice";
-import {useEffect} from "react";
+import {getPosts} from "../redux/modules/postSlice";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 function CommunityPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const {posts, isLoading, status} = useSelector((state) => state.postSlice)
 
-  const postList = useSelector(state => state.postSlice.posts)
-  const tr = useSelector((state)=> state.postSlice.isLoading)
-  console.log(tr)
-  
-  //최신순정렬
-  const LatestList = [...postList].reverse()
+  const [searchWord, setSearchWord] = useState("")
 
-  useEffect(()=> {
+  let [list, setList] = useState([])
+
+
+  const onChangeSearchWord = (e) => {
+    setSearchWord(e.target.value)
+  }
+
+  //검색어 필터
+  const onSearchHandler = () => {
+    setList(posts.filter((data) => {
+        return data.title.includes(searchWord)
+      })
+    )
+  }
+
+
+  useEffect(() => {
     dispatch(getPosts())
-  },[])
+      .then((res)=> {//최신순정렬
+        setList(res.payload.reverse())
+      })
+  }, [])
 
-  console.log(postList)
 
   const goPost = () => {
     navigate("/post")
   }
 
-  if(tr===true) {
+  if (isLoading === true) {
     return (
-      <div>로딩중입니다</div>
+      <div>
+        로딩중입니다
+        <p>{status}</p>
+      </div>
     )
-  }else {
+  } else {
     return (
       <div className={"CommunityPage"}>
         <StBtnBox>
-          <button>게시글찾기</button>
-          <button onClick={goPost}>추가하기</button>
+          <input onChange={onChangeSearchWord} type="text"/>
+          <div>
+            <button onClick={onSearchHandler}>게시글찾기</button>
+            <button onClick={goPost}>추가하기</button>
+          </div>
         </StBtnBox>
         <div>
           <StListUl>
             {
-              LatestList.map((data)=> (
-                <CommunityList {...data} key={data.id} />
+              list.map((data) => (
+                <CommunityList {...data} key={data.id}/>
               ))
             }
           </StListUl>
@@ -49,11 +69,20 @@ function CommunityPage() {
       </div>
     );
   }
-};
+}
 
 const StBtnBox = styled.div`
   display: flex;
   margin: 30px 0;
+  justify-content: space-between;
+  padding: 0 10px;
+
+  & input {
+    flex: 1;
+    padding-left: 30px;
+    border-radius: 5px;
+    border: 1px solid #777;
+  }
 
   & button {
     border: none;
@@ -62,14 +91,14 @@ const StBtnBox = styled.div`
     cursor: pointer;
     border-radius: 5px;
     color: white;
+    margin-left: 20px;
 
     &:first-child {
-      width: 75%;
-      margin-right: 30px;
+      width: 200px;
     }
 
     &:last-child {
-      width: 25%;
+      width: 200px;
     }
   }
 `
@@ -79,7 +108,7 @@ const StListUl = styled.ul`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  
+
   @media screen and (max-width: 1017px) {
     justify-content: space-evenly;
   }

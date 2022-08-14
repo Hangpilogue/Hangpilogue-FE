@@ -1,10 +1,16 @@
 import axios from "axios";
 
-const instance = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:4000",
-  timeout:2000,
+  // timeout:2000,
 })
 
-// instance.defaults.headers.common["Authorization"] = USER_TOKEN
+// api.defaults.headers.common["Authorization"] = USER_TOKEN
 
-export default instance
+const apis = {
+  getPosts: () => api.get("/posts"),
+  postPosts: (posts) => api.post("/posts", {...posts}),
+  editPosts: (posts) => api.patch(`/posts/${posts.id}`, {...posts})
+}
+
+export default apis

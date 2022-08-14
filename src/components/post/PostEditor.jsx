@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {editPosts, postPosts} from "../../redux/modules/postSlice";
 
 
 
 const PostEditor = ({isEdit, originData}) => {
-
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
+  // const isLoading = useSelector(state => state.postSlice.isLoading)
+  const {isLoading, status} = useSelector(state => state.postSlice)
   //미리보기
   const [previewImg, setPreviewImg] = useState("https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png")
   //파일 이름 placeholder
@@ -70,41 +70,51 @@ const PostEditor = ({isEdit, originData}) => {
     alert("수정 완료!")
     navigate("/")
   }
-  return (
-    <StPostPage>
-      <StWrapper>
-        <StPostTitle>
-          <label htmlFor={"title"}>게시글 제목</label>
-          <input name={"title"} value={title} onChange={onChangeHandler} id={"title"} type="text"/>
-        </StPostTitle>
-        <StPostImage>
-          <StPostImageBox postImg={previewImg}/>
-          <input id={"uploadImg"} value={postFile.name || ""} onChange={() => {
-          }} placeholder={"첨부파일"}/>
-          <label htmlFor={"img"}>파일찾기</label>
-          <input type='file'
-                 id={"img"}
-                 name={"img"}
-                 accept='image/jpg,impge/png,image/jpeg,image/gif'
-                 onChange={handleFileOnChange}>
-          </input>
-        </StPostImage>
-        <StPostContent>
-          <label htmlFor={"content"}>게시글 내용</label>
-          <textarea name={"content"} value={content} onChange={onChangeHandler} id={"content"}
-                    placeholder={"후기를 남겨주세요!"}></textarea>
-        </StPostContent>
-        <StBtnBox>
-          {
-            isEdit
-            ?<StBtn onClick={onEditSubmitHandler} color={"green"}>수정 완료</StBtn>
-              :<StBtn onClick={onSubmitHandler} color={"green"}>완료</StBtn>
-          }
-          <StBtn color={"red"}>취소</StBtn>
-        </StBtnBox>
-      </StWrapper>
-    </StPostPage>
-  )
+  if(isLoading===true) {
+    return (
+      <div>
+        로딩중입니다
+      </div>
+    )
+  } else {
+    return (
+      <StPostPage>
+        <StWrapper>
+          <StPostTitle>
+            <label htmlFor={"title"}>게시글 제목</label>
+            <input name={"title"} value={title} onChange={onChangeHandler} id={"title"} type="text"/>
+          </StPostTitle>
+          <StPostImage>
+            <StPostImageBox postImg={previewImg}/>
+            <input id={"uploadImg"} value={postFile.name || ""} onChange={() => {
+            }} placeholder={"첨부파일"}/>
+            <label htmlFor={"img"}>파일찾기</label>
+            <input type='file'
+                   id={"img"}
+                   name={"img"}
+                   accept='image/jpg,impge/png,image/jpeg,image/gif'
+                   onChange={handleFileOnChange}>
+            </input>
+          </StPostImage>
+          <StPostContent>
+            <label htmlFor={"content"}>게시글 내용</label>
+            <textarea name={"content"} value={content} onChange={onChangeHandler} id={"content"}
+                      placeholder={"후기를 남겨주세요!"}></textarea>
+          </StPostContent>
+          <StBtnBox>
+            {
+              isEdit
+                ?<StBtn onClick={onEditSubmitHandler} color={"green"}>수정 완료</StBtn>
+                :<StBtn onClick={onSubmitHandler} color={"green"}>완료</StBtn>
+            }
+            <StBtn color={"red"}>취소</StBtn>
+          </StBtnBox>
+        </StWrapper>
+      </StPostPage>
+    )
+  }
+  
+
 }
 
 const StOutline = styled.div`

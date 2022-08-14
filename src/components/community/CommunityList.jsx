@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 const CommunityList = ({...data}) => {
   const navigate = useNavigate()
   const goDetail = () => {
-    navigate(`/edit/${data.id}`)
+    navigate(`/detail/${data.id}`)
   }
 
   return (
@@ -15,6 +15,8 @@ const CommunityList = ({...data}) => {
       </StImgArea>
       <div className="textBox">
         <div className="title">{data.title}</div>
+        {/*서버연동하면 복구해야함*/}
+        {/*<div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>{data.commentCount}</div>*/}
         <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
       </div>
     </StListLi>
