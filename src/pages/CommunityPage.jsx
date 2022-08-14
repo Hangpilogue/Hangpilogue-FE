@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import {FaRegCommentAlt} from "react-icons/fa";
 import CommunityList from "../components/community/CommunityList";
 import {useDispatch, useSelector} from "react-redux";
-import {getPosts} from "../redux/modules/postSlice";
+import {getPosts, getPosts2} from "../redux/modules/postSlice";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
@@ -10,38 +9,47 @@ function CommunityPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const postList = useSelector(state => state.postSlice)
-
-  console.log(postList)
+  const postList = useSelector(state => state.postSlice.posts)
+  const tr = useSelector((state)=> state.postSlice.isLoading)
+  console.log(tr)
+  
+  //최신순정렬
+  const LatestList = [...postList].reverse()
 
   useEffect(()=> {
     dispatch(getPosts())
   },[])
 
+  console.log(postList)
+
   const goPost = () => {
     navigate("/post")
   }
 
-  return (
-    <StCommunityPage>
-      <StBtnBox>
-        <button>게시글찾기</button>
-        <button onClick={goPost}>추가하기</button>
-      </StBtnBox>
-      <StPostBox>
-        <StListUl>
-          {
-            postList.map((data)=> (
-              <CommunityList {...data} key={data.id} />
-            ))
-          }
-        </StListUl>
-      </StPostBox>
-    </StCommunityPage>
-  );
+  if(tr===true) {
+    return (
+      <div>로딩중입니다</div>
+    )
+  }else {
+    return (
+      <div className={"CommunityPage"}>
+        <StBtnBox>
+          <button>게시글찾기</button>
+          <button onClick={goPost}>추가하기</button>
+        </StBtnBox>
+        <div>
+          <StListUl>
+            {
+              LatestList.map((data)=> (
+                <CommunityList {...data} key={data.id} />
+              ))
+            }
+          </StListUl>
+        </div>
+      </div>
+    );
+  }
 };
-
-const StCommunityPage = styled.div``
 
 const StBtnBox = styled.div`
   display: flex;
@@ -65,8 +73,6 @@ const StBtnBox = styled.div`
     }
   }
 `
-
-const StPostBox = styled.div``
 
 const StListUl = styled.ul`
   list-style: none;

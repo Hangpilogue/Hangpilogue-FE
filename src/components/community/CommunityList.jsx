@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 const CommunityList = ({...data}) => {
   const navigate = useNavigate()
   const goDetail = () => {
-    navigate(`/detail/${data.id}`)
+    navigate(`/edit/${data.id}`)
   }
 
   return (
