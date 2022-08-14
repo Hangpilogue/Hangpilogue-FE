@@ -4,9 +4,7 @@ function Button(props) {
     const  {buttonText, action } = props;
 
     return (
-        <CommonButton 
-        onClick={action}
-        >
+        <CommonButton onClick={action} >
             {buttonText}
         </CommonButton>
     );
