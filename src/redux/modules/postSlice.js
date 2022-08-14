@@ -1,6 +1,4 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "axios";
-import instance from "../../shared/Request";
 import apis from "../../shared/Request";
 //
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
@@ -29,6 +27,17 @@ export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
     console.log(err)
   }
 })
+
+export const deletePosts = createAsyncThunk("DELETE_POSTS", async (posts)=>{
+  try {
+    const response = await apis.deletePosts(posts)
+    return posts
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// export const getMyPosts = createSlice()
 
 
 export const postSlice = createSlice({
@@ -84,7 +93,22 @@ export const postSlice = createSlice({
     [editPosts.rejected]: (state, action) => {
       state.isLoading = false
       state.status = "rejected"
-    }
+    },
+    [deletePosts.pending]: (state, action) => {
+      state.isLoading = false
+      state.status = "pending"
+    },
+    [deletePosts.fulfilled]: (state, action) => {
+      state.isLoading = false
+      state.status = "fulfilled"
+      state.posts = state.posts.filter((data)=> {
+        return parseInt(data.id) !== parseInt(action.payload)
+      })
+    },
+    [deletePosts.rejected]: (state, action) => {
+      state.isLoading = false
+      state.status = "rejected"
+    },
   }
 });
 

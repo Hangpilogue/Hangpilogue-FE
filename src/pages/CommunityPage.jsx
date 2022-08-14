@@ -40,6 +40,11 @@ function CommunityPage() {
     navigate("/post")
   }
 
+  window.onscroll = ()=> {
+    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    }
+  }
+
   if (isLoading === true) {
     return (
       <div>
