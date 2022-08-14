@@ -1,5 +1,6 @@
 import PostEditor from "../components/post/PostEditor";
 
+
 function PostPage() {
 
   return (
@@ -8,6 +9,5 @@ function PostPage() {
     </>
   );
 }
-
 
 export default PostPage;

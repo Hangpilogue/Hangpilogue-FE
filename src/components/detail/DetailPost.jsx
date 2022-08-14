@@ -1,6 +1,5 @@
 ////src/components/posts/DetailPost
 
-
 import styled from "styled-components";
 
 import Button from "../common/Button";
@@ -49,59 +48,57 @@ function DetailPost() {
                         <div> 내용이 들어갑니다 </div>
                     </div>
             </DetailLayout>
-                
-
         </>
     );
 };
 
+
 export default DetailPost;
 
-
 const DetailLayout = styled.div`
-    /* background-color: aliceblue; */
-    border: 2px solid #aaa;
-    border-radius: 4px ;
+  /* background-color: aliceblue; */
+  border: 2px solid #aaa;
+  border-radius: 4px;
 
-    max-width: 800px;
-    min-width: 500px;
-    min-height: 80vh;
-    padding: 50px 20px;
-    margin:  50px;
+  max-width: 800px;
+  min-width: 500px;
+  min-height: 80vh;
+  padding: 50px 20px;
+  margin: 50px;
 
-.container {
+  .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+  }
 
-.titleContainer {
+  .titleContainer {
     /* flex-direction: column;
     justify-content: center; */
-}
-.buttonContainer {
+  }
+  .buttonContainer {
     display: flex;
-}
+  }
 
-.imageContainer {
+  .imageContainer {
     border: 2px solid #aaa;
     border-radius: 4px;
 
-    max-width:500px;
-    min-width:300px;
+    max-width: 500px;
+    min-width: 300px;
     min-height: 40vh;
     padding: 50px 20px;
     margin: 50px auto;
-}
+  }
 
-.textContainer {
+  .textContainer {
     border: 2px solid #aaa;
     border-radius: 4px;
 
-    max-width:500px;
-    min-width:300px;
+    max-width: 500px;
+    min-width: 300px;
     min-height: 20vh;
     padding: 50px 20px;
     margin: 50px auto;
-}
+  }
 `;
