@@ -12,7 +12,7 @@ function Comment() {
 
   const commentData = useSelector( state =>  state.comment);
   const dispatch = useDispatch();
-  const commentInput = useRef();
+  // const commentInput = useRef();
 
   return (
       <>
@@ -22,7 +22,7 @@ function Comment() {
             placeholder={"댓글 내용"}
             max={100}
             required
-            ref={commentInput}
+            // ref={commentInput}
             />
             <div>
             <Button 

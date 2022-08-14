@@ -15,6 +15,8 @@ const CommunityList = ({...data}) => {
       </StImgArea>
       <div className="textBox">
         <div className="title">{data.title}</div>
+        {/*서버연동하면 복구해야함*/}
+        {/*<div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>{data.commentCount}</div>*/}
         <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
       </div>
     </StListLi>
@@ -26,7 +28,7 @@ const StListLi = styled.li`
   border-radius: 5px;
   overflow: hidden;
   margin: 10px;
-
+  cursor: pointer;
   & .textBox {
     display: flex;
     justify-content: space-between;

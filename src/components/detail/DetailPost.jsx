@@ -6,48 +6,52 @@ import Button from "../common/Button";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getPosts } from "../../redux/modules/postSlice";
+import { getPost } from "../../redux/modules/detailSlice"
+
 
 function DetailPost() {
-  const dispatch = useDispatch();
-  const list = useSelector((state) => state);
-  console.log(list.title);
 
-  useEffect(() => {
-    dispatch(getPosts());
-  });
+    const dispatch = useDispatch();
+    const list = useSelector( state => state )
+    console.log(list.title)
 
-  return (
-    <>
-      <DetailLayout>
-        <div className="container">
-          <div className="titleContainer">
-            <span> 제목이들어갑니다 </span>
-          </div>
-          <div className="buttonContainer">
-            <Button
-              type="button"
-              buttonText={"수정하기"}
-              action={console.log("진짜로??")}
-            />
-            <Button
-              type="button"
-              buttonText={"삭제하기"}
-              action={console.log("진짜진짜로????")}
-            />
-          </div>
-        </div>
+    useEffect(() => {
+        dispatch((getPost()))
+    },[])
 
-        <div className="imageContainer">
-          <div> 이미지가 들어갑니다 </div>
-        </div>
-        <div className="textContainer">
-          <div> 내용이 들어갑니다 </div>
-        </div>
-      </DetailLayout>
-    </>
-  );
-}
+
+    return (
+        <>
+            <DetailLayout>
+                <div className="container">
+                    <div className="titleContainer">
+                        <span> 제목이들어갑니다 </span>
+                    </div>
+                    <div className="buttonContainer">
+                        <Button 
+                        type="button"
+                        buttonText={"수정하기"}
+                        action={console.log("진짜로??")}
+                        />
+                        <Button 
+                        type="button"
+                        buttonText={"삭제하기"}
+                        action={console.log("진짜진짜로????")}
+                        />
+                    </div>
+                </div>
+
+                    <div className="imageContainer">
+                        <div> 이미지가 들어갑니다 </div>
+                    </div>
+                    <div className="textContainer">
+                        <div> 내용이 들어갑니다 </div>
+                    </div>
+            </DetailLayout>
+        </>
+    );
+};
+
 
 export default DetailPost;
 
