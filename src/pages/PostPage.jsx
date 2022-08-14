@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import {useDispatch, useSelector} from "react-redux";
 
 import {useEffect, useState} from "react";
@@ -54,6 +55,7 @@ function PostPage() {
 
 
 
+
   return (
     <StPostPage>
       <StWrapper>
@@ -85,7 +87,7 @@ function PostPage() {
       </StWrapper>
     </StPostPage>
   );
-};
+}
 
 const StOutline = styled.div`
   border: 1px solid #eee;
@@ -100,17 +102,18 @@ const StOutline = styled.div`
     font-weight: 700;
     padding-left: 10px;
   }
-`
+`;
 
 const StPostPage = styled.div`
   padding: 15px;
   display: flex;
   justify-content: center;
-`
+`;
 
 const StWrapper = styled.div`
   width: 500px;
 `
+
 
 const StPostTitle = styled(StOutline)`
   display: flex;
@@ -132,7 +135,7 @@ const StPostTitle = styled(StOutline)`
       outline: none;
     }
   }
-`
+`;
 
 const StPostImage = styled(StOutline)`
   margin-bottom: 10px;
@@ -176,7 +179,7 @@ const StPostImage = styled(StOutline)`
     border: 0;
     display: none;
   }
-`
+`;
 
 const StPostImageBox = styled.div`
   height: 300px;
@@ -189,7 +192,6 @@ const StPostImageBox = styled.div`
 `
 
 const StPostContent = styled(StOutline)`
-
   & textarea {
     margin-top: 10px;
     width: 100%;
@@ -206,13 +208,13 @@ const StPostContent = styled(StOutline)`
       outline: none;
     }
   }
-`
+`;
 
 const StBtnBox = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
-`
+`;
 
 const StBtn = styled.button`
   width: 50%;
@@ -226,6 +228,6 @@ const StBtn = styled.button`
   &:first-child {
     margin-right: 10px;
   }
-`
+`;
 
 export default PostPage;
