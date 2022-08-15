@@ -9,8 +9,10 @@ const api = axios.create({
 
 const apis = {
   getPosts: () => api.get("/posts"),
+  // getMyPosts: (id)=> api.get(`/posts?id=${id}`),
   postPosts: (posts) => api.post("/posts", {...posts}),
-  editPosts: (posts) => api.patch(`/posts/${posts.id}`, {...posts})
+  editPosts: (posts) => api.patch(`/posts/${posts.id}`, {...posts}),
+  deletePosts:(posts) => api.delete(`/posts/${posts}`)
 }
 
 export default apis

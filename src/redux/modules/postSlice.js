@@ -1,7 +1,13 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "axios";
-import instance from "../../shared/Request";
 import apis from "../../shared/Request";
+// import PPIKKA from "../../sounds/피카츄.mp3";
+//
+//
+// const audio = new Audio(PPIKKA)
+// const playSounds = () => {
+//   audio.volume = 0.05
+//   audio.play()
+// }
 //
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   try {
@@ -30,13 +36,25 @@ export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
   }
 })
 
+export const deletePosts = createAsyncThunk("DELETE_POSTS", async (posts)=>{
+  try {
+    await apis.deletePosts(posts)
+    return posts
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// export const getMyPosts = createSlice()
+
 
 export const postSlice = createSlice({
   name: "post",
   initialState: {
     isLoading: false,
     status: "Welcome",
-    posts: []
+    posts: [],
+    // playSounds
   },
   reducers: {},
   extraReducers: {
@@ -84,7 +102,22 @@ export const postSlice = createSlice({
     [editPosts.rejected]: (state, action) => {
       state.isLoading = false
       state.status = "rejected"
-    }
+    },
+    [deletePosts.pending]: (state, action) => {
+      state.isLoading = false
+      state.status = "pending"
+    },
+    [deletePosts.fulfilled]: (state, action) => {
+      state.isLoading = false
+      state.status = "fulfilled"
+      state.posts = state.posts.filter((data)=> {
+        return parseInt(data.id) !== parseInt(action.payload)
+      })
+    },
+    [deletePosts.rejected]: (state, action) => {
+      state.isLoading = false
+      state.status = "rejected"
+    },
   }
 });
 
