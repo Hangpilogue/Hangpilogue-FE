@@ -1,11 +1,73 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { setCookie } from "../util/cookie";
+import { useDispatch } from "react-redux";
+import { goToHome, setLogin } from "../redux/modules/loginCheck";
 
 function LogInPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const id_ref = useRef(null);
-  const pw_ref = useRef(null);
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [userIdError, setUserIdError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const onChangeUserId = (e) => {
+    const userIdRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+    if (!e.target.value || userIdRegex.test(e.target.value))
+      setUserIdError(false);
+    else setUserIdError(true);
+    setUserId(e.target.value);
+    setLoginData({ ...loginData, email: e.target.value });
+  };
+  const onChangePassword = (e) => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,13}$/;
+    if (!e.target.value || passwordRegex.test(e.target.value))
+      setPasswordError(false);
+    else setPasswordError(true);
+    setPassword(e.target.value);
+    setLoginData({ ...loginData, password: e.target.value });
+  };
+  const onSubmit = async () => {
+    // if (!userId) setUserIdError(true);
+    // if (!password) setPasswordError(true);
+
+    // if (userId && password) return true;
+    // if (userIdError) return;
+    // if (!userId || !password) {
+    //   return alert("제대로 입력해!");
+    // }
+    // if (passwordError) return;
+
+    // alert("아무거나");
+    axios
+      .post("http://taesik.shop/api/user/login", loginData)
+      .then((result) => {
+        // let { email, nickname } = result.data;
+        // console.log(result);
+        // if (email !== null && email !== "" && email !== undefined) {
+        //   alert("로그인되었습니다");
+        // let expires = new Date();
+        // expires.setMinutes(expires.getMinutes() + 60);
+        //   setCookie("email", `${email}`, { path: "/", expires });
+        //   setCookie("nickname", `${nickname}`, { path: "/", expires });
+        //   dispatch(setLogin());
+        //   dispatch(goToHome(navigate));
+        // }
+        console.log(result);
+        const { token } = result.data;
+        // setCookie("token", `${token}`, { path: "/" });
+        document.cookie = `_y7o12=${token}`;
+        // dispatch(setLogin());
+        navigate("/");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div>
@@ -18,17 +80,23 @@ function LogInPage() {
           alignContent: "center",
         }}
       >
-        <StInput placeholder="아이디를 입력해주세요" ref={id_ref} />
-        <StP>아이디는 이메일형식입니다</StP>
+        <StInput
+          placeholder="아이디를 입력해주세요"
+          type="email"
+          value={userId}
+          onChange={onChangeUserId}
+        />
+        {userIdError && <StP>아이디는 이메일형식입니다</StP>}
         <StInput
           placeholder="비밀번호를 입력해주세요"
           minLength={8}
-          ref={pw_ref}
+          value={password}
+          onChange={onChangePassword}
         />
-        <StP>비밀번호는 8자리이상입니다</StP>
+        {passwordError && <StP>비밀번호는 8자리이상입니다</StP>}
       </div>
       <StButtons>
-        <StButton>로그인</StButton>
+        <StButton onClick={onSubmit}>로그인</StButton>
         <StButton onClick={() => navigate("/sign_up")}>회원가입</StButton>
       </StButtons>
       {/* <StInputs>
@@ -70,6 +138,7 @@ const StInput = styled.input`
   width: 300px;
   justify-content: center;
   margin: auto;
+  margin-top: 20px;
   padding: 10px;
 `;
 const StP = styled.p`
