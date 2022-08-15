@@ -9,7 +9,7 @@ function CommunityPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {posts, isLoading, status} = useSelector((state) => state.postSlice)
-
+  const {isLogin, token} = useSelector(state => state.tokenSlice)
   const [searchWord, setSearchWord] = useState("")
 
   let [list, setList] = useState([])
@@ -30,8 +30,8 @@ function CommunityPage() {
 
   useEffect(() => {
     dispatch(getPosts())
-      .then((res)=> {//최신순정렬
-        setList(res.payload.reverse())
+      .then((res) => {
+        setList(res.payload)
       })
   }, [])
 
@@ -41,8 +41,8 @@ function CommunityPage() {
   }
 
   //무한스크롤
-  window.onscroll = ()=> {
-    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+  window.onscroll = () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
     }
   }
 
@@ -60,14 +60,19 @@ function CommunityPage() {
           <input onChange={onChangeSearchWord} type="text"/>
           <div>
             <button onClick={onSearchHandler}>게시글찾기</button>
-            <button onClick={goPost}>추가하기</button>
+            <button onClick={() => {
+              isLogin
+                ? goPost()
+                : alert("로그인이 필요합니다")
+            }}>추가하기
+            </button>
           </div>
         </StBtnBox>
         <div>
           <StListUl>
             {
               list.map((data) => (
-                <CommunityList {...data} key={data.id}/>
+                <CommunityList {...data} key={data.postId}/>
               ))
             }
           </StListUl>

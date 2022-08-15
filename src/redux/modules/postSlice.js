@@ -12,7 +12,7 @@ import apis from "../../shared/Request";
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   try {
     const response = await apis.getPosts()
-    return response.data
+    return response.data.postlists
   } catch (err) {
     console.log(err)
   }
@@ -21,25 +21,36 @@ export const getPosts = createAsyncThunk("GET_POSTS", async () => {
 export const postPosts = createAsyncThunk("POST_POSTS", async (post) => {
   try {
     const response = await apis.postPosts(post)
-    return response.data
+    return response.data.postlists
   } catch (err) {
-    console.log(err)
+    console.log(err.response.data)
   }
 })
 
 export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
   try {
     const response = await apis.editPosts(post)
-    return response.data
+    console.log(post)
+    return post
   } catch (err) {
     console.log(err)
   }
 })
 
-export const deletePosts = createAsyncThunk("DELETE_POSTS", async (posts)=>{
+export const deletePosts = createAsyncThunk("DELETE_POSTS", async (post)=>{
   try {
-    await apis.deletePosts(posts)
-    return posts
+    await apis.deletePosts(post)
+    return post
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async ()=> {
+  try {
+    const response = await apis.getMyPosts()
+    console.log(response)
+    return response.data.mypostlists
   } catch (err) {
     console.log(err)
   }
@@ -54,9 +65,14 @@ export const postSlice = createSlice({
     isLoading: false,
     status: "Welcome",
     posts: [],
+    myPosts:[]
     // playSounds
   },
-  reducers: {},
+  reducers: {
+    clearMyPosts:(state,action) => {
+      state.myPosts=[]
+    }
+  },
   extraReducers: {
     [getPosts.pending]: (state, action) => {
       state.isLoading = true
@@ -92,7 +108,7 @@ export const postSlice = createSlice({
       state.isLoading = false
       state.status = "fulfilled"
       state.posts = state.posts.map((data) => {
-        if (data.id === action.payload.id) {
+        if (data.postId === action.payload.id) {
           return {...data, ...action.payload}
         } else {
           return data
@@ -118,10 +134,13 @@ export const postSlice = createSlice({
       state.isLoading = false
       state.status = "rejected"
     },
+    [getMyPosts.fulfilled]:(state,action)=> {
+      state.myPosts = [...action.payload]
+    }
   }
 });
 
 
-export const {} = postSlice.actions;
+export const {clearMyPosts} = postSlice.actions;
 
 export default postSlice.reducer;

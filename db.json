@@ -14,5 +14,12 @@
       "img": "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png",
       "id": 2
     }
+  ],
+  "users": [
+    {
+      "email": "ckdtns@naver.com",
+      "password": "$2a$10$xcHaXEhmqRNUIYXSa3veLOoHtKrxtKMQ4G6spf1Tn2t5vz9lciRXa",
+      "id": 1
+    }
   ]
 }

@@ -31,7 +31,7 @@ const PostEditor = ({isEdit, originData}) => {
         content: originData.content,
         nickname: originData.nickname,
         img:originData.img,
-        id:originData.id
+        id:originData.postId
       })
       setPreviewImg(originData.img)
     }
@@ -60,6 +60,7 @@ const PostEditor = ({isEdit, originData}) => {
     }
     reader.readAsDataURL(file)
   }
+
 
   const onSubmitHandler = () => {
     for (let i = 0; i < inputs.current.length; i++) {
@@ -91,9 +92,12 @@ const PostEditor = ({isEdit, originData}) => {
         navigate("/")
       }
     }
+  }
 
-
-
+  const onCancelHandler = () => {
+    if(window.confirm("취소하시겠습니까?")) {
+      navigate("/mypage")
+    }
   }
 
   if(isLoading===true) {
@@ -130,7 +134,7 @@ const PostEditor = ({isEdit, originData}) => {
           </StPostContent>
           <StBtnBox>
                 <StBtn onClick={onSubmitHandler} color={"green"}>{isEdit?"수정":"완료"}</StBtn>
-            <StBtn color={"red"}>취소</StBtn>
+            <StBtn onClick={onCancelHandler} color={"red"}>취소</StBtn>
           </StBtnBox>
         </StWrapper>
       </StPostPage>

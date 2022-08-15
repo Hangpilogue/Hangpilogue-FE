@@ -17,7 +17,7 @@ function EditPage() {
 
   useEffect(()=> {
     if(postList.length>=1) {
-      const targetPost = postList.find((data)=>parseInt(data.id)===parseInt(postId))
+      const targetPost = postList.find((data)=>parseInt(data.postId)===parseInt(postId))
       if(targetPost) {
         setOriginData(targetPost)
       }else {
@@ -26,6 +26,7 @@ function EditPage() {
       }
     }
   })
+
 
   return (
     <>

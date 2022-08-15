@@ -1,18 +1,41 @@
 import axios from "axios";
 
+
+//토큰값 구하기
+let x, USER_TOKEN;
+
+function getCookie(cookie_name) {
+  let val = document.cookie.split(';');
+
+  for (let i = 0; i < val.length; i++) {
+    x = val[i].substr(0, val[i].indexOf('='));
+    USER_TOKEN = val[i].substr(val[i].indexOf('=') + 1);
+    x = x.replace(/^\s+|\s+$/g, '');
+    if (x == cookie_name) {
+      return USER_TOKEN
+    }
+  }
+}
+
+getCookie("token")
+
+
 const api = axios.create({
-  baseURL: "http://localhost:4000",
-  // timeout:2000,
+  baseURL: "http://taesik.shop/api/",
+  timeout: 2000,
 })
 
-// api.defaults.headers.common["Authorization"] = USER_TOKEN
+api.interceptors.request.use((config) => {
+  config.headers["Authorization"] = "Bearer" + " " + USER_TOKEN
+  return config
+})
 
 const apis = {
   getPosts: () => api.get("/posts"),
-  // getMyPosts: (id)=> api.get(`/posts?id=${id}`),
+  getMyPosts: (id)=> api.get(`/posts/myposts`),
   postPosts: (posts) => api.post("/posts", {...posts}),
-  editPosts: (posts) => api.patch(`/posts/${posts.id}`, {...posts}),
-  deletePosts:(posts) => api.delete(`/posts/${posts}`)
+  editPosts: (posts) => api.put(`/posts/${posts.id}`, posts),
+  deletePosts: (posts) => api.delete(`/posts/${posts}`)
 }
 
 export default apis

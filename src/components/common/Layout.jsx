@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import PPIKKA from "../../sounds/피카츄.mp3"
+import {useDispatch} from "react-redux";
 
 function Layout(props) {
-
   // const audio = new Audio(PPIKKA)
   // const playSounds = () => {
   //   audio.volume = 0.05
   //   audio.play()
   // }
+
 
 
   return (

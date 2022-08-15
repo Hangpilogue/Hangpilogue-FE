@@ -6,8 +6,10 @@ import {useSelector} from "react-redux";
 const CommunityList = ({...data}) => {
   const navigate = useNavigate()
   const goDetail = () => {
-    navigate(`/detail/${data.id}`)
+    navigate(`/edit/${data.postId}`)
   }
+
+  // console.log(data.img)
 
   return (
     <StListLi onClick={goDetail}>

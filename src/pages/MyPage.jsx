@@ -1,17 +1,26 @@
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import MyPageTableRow from "../components/myPage/MyPageTableRow";
-import {useEffect} from "react";
-import {getPosts} from "../redux/modules/postSlice";
+import {useEffect, useState} from "react";
+import {getMyPosts} from "../redux/modules/postSlice";
 import {useNavigate} from "react-router-dom";
+import {logIn} from "../redux/modules/tokenSlice";
 
 function MyPage() {
   const dispatch = useDispatch()
-  const list = useSelector((state)=> state.postSlice.posts)
+  const list = useSelector((state)=> state.postSlice.myPosts)
   const navigate = useNavigate()
+  // const [list,setList] = useState()
+
+  const {token} = useSelector(state => state.tokenSlice)
+  if(!token) {
+    alert("로그인이 필요한 기능입니다")
+    navigate("/")
+  }
+
 
   useEffect(()=> {
-    dispatch(getPosts())
+    dispatch(getMyPosts())
   },[])
 
   const goPost = () => {
@@ -33,7 +42,7 @@ function MyPage() {
         <tbody>
         {
           list.map((data)=> (
-             <MyPageTableRow {...data} key={data.id} />
+             <MyPageTableRow {...data} key={data.postId} />
           ))
         }
         </tbody>
