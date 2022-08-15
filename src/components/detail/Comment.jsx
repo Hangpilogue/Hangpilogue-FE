@@ -12,7 +12,7 @@ function Comment() {
 
   const commentData = useSelector( state =>  state.comment);
   const dispatch = useDispatch();
-  const commentInput = useRef();
+  // const commentInput = useRef();
 
 
   const onclickAddComment = () => {

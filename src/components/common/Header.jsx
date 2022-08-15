@@ -5,19 +5,19 @@ function Header(props) {
   const navigate = useNavigate();
   return (
     <StHeader>
-      <StLeftHeader>
+      <div className={"leftContainer"}>
         <StLogo onClick={() => navigate("/")}></StLogo>
-      </StLeftHeader>
-      <StRightHeader>
-        <StNav>
+      </div>
+      <div className={"rightContainer"}>
+        <nav>
           <StNavUl>
             <StNavLi onClick={() => navigate("/mypage")}>마이페이지</StNavLi>
             <StNavLi onClick={() => navigate("/post")}>포스트</StNavLi>
             <StNavLi onClick={() => navigate("/detail/:postId")}>디테일</StNavLi>
             <StNavLi onClick={() => navigate("/login")}>로그인</StNavLi>
           </StNavUl>
-        </StNav>
-      </StRightHeader>
+        </nav>
+      </div>
     </StHeader>
   );
 };
@@ -30,8 +30,6 @@ const StHeader = styled.header`
   align-items: center;
 `
 
-const StLeftHeader = styled.div``
-
 const StLogo = styled.div`
   background-image: url("/static/images/logoImage.png");
   background-repeat: no-repeat;
@@ -41,11 +39,6 @@ const StLogo = styled.div`
   cursor: pointer
 `
 
-
-const StRightHeader = styled.div``
-
-
-const StNav = styled.nav``
 
 const StNavUl = styled.ul`
   display: flex;
