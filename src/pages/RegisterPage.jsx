@@ -81,7 +81,7 @@ const RegisterPage = () => {
   //     else return false;
   //   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async () => {
     // if (validation()) {
     //   return;
     // }
