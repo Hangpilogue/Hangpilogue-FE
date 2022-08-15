@@ -14,6 +14,11 @@ function Comment() {
   const dispatch = useDispatch();
   const commentInput = useRef();
 
+
+  const onclickAddComment = () => {
+    
+  }
+
   return (
       <>
         <CommentLayout>
@@ -22,13 +27,13 @@ function Comment() {
             placeholder={"댓글 내용"}
             max={100}
             required
-            ref={commentInput}
+            // ref={commentInput}
             />
             <div>
             <Button 
             type="button"
             buttonText={"댓글달기"}
-            action={null}
+            action={onclickAddComment}
             />
             </div>
             {/* <div>

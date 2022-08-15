@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 function InputBox(props) {
 
@@ -20,6 +21,7 @@ function InputBox(props) {
             maxLength={max}
             minLength={min}
             required={required}
+            ref={useRef}
             // onChange={(e)=> {
             // const currentValue = e.target.value;}}
             >

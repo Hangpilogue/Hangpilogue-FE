@@ -7,7 +7,7 @@ import Button from "../common/Button";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getPost } from "../../redux/modules/postSlice"
+import { getPost } from "../../redux/modules/detailSlice"
 
 
 function DetailPost() {
@@ -18,7 +18,7 @@ function DetailPost() {
 
     useEffect(() => {
         dispatch((getPost()))
-    })
+    },[])
 
 
     return (
