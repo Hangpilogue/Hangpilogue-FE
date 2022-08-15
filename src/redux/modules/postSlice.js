@@ -1,5 +1,13 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import apis from "../../shared/Request";
+// import PPIKKA from "../../sounds/피카츄.mp3";
+//
+//
+// const audio = new Audio(PPIKKA)
+// const playSounds = () => {
+//   audio.volume = 0.05
+//   audio.play()
+// }
 //
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   try {
@@ -30,7 +38,7 @@ export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
 
 export const deletePosts = createAsyncThunk("DELETE_POSTS", async (posts)=>{
   try {
-    const response = await apis.deletePosts(posts)
+    await apis.deletePosts(posts)
     return posts
   } catch (err) {
     console.log(err)
@@ -45,7 +53,8 @@ export const postSlice = createSlice({
   initialState: {
     isLoading: false,
     status: "Welcome",
-    posts: []
+    posts: [],
+    // playSounds
   },
   reducers: {},
   extraReducers: {

@@ -3,11 +3,11 @@ import PPIKKA from "../../sounds/피카츄.mp3"
 
 function Layout(props) {
 
-  const audio = new Audio(PPIKKA)
-  const playSounds = () => {
-    audio.volume = 0.05
-    audio.play()
-  }
+  // const audio = new Audio(PPIKKA)
+  // const playSounds = () => {
+  //   audio.volume = 0.05
+  //   audio.play()
+  // }
 
 
   return (

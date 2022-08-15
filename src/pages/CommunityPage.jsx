@@ -40,6 +40,7 @@ function CommunityPage() {
     navigate("/post")
   }
 
+  //무한스크롤
   window.onscroll = ()=> {
     if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
     }
