@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 const CommunityList = ({...data}) => {
   const navigate = useNavigate()
   const goDetail = () => {
-    navigate(`/edit/${data.postId}`)
+    navigate(`/detail/${data.postId}`)
   }
 
   // console.log(data.img)

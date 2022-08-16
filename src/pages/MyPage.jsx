@@ -8,9 +8,10 @@ import {logIn} from "../redux/modules/tokenSlice";
 
 function MyPage() {
   const dispatch = useDispatch()
-  const list = useSelector((state)=> state.postSlice.myPosts)
+  // console.log(lista)
   const navigate = useNavigate()
-  // const [list,setList] = useState()
+  // const [list,setList] = useState([])
+
 
   const {token} = useSelector(state => state.tokenSlice)
   if(!token) {
@@ -18,10 +19,18 @@ function MyPage() {
     navigate("/")
   }
 
+  useEffect(()=> {
+    if(token) {
+      dispatch(logIn())
+    }
+  },[])
+
 
   useEffect(()=> {
     dispatch(getMyPosts())
   },[])
+  const list = useSelector((state)=> state.postSlice.myPosts)
+  console.log(list)
 
   const goPost = () => {
     navigate("/post")
@@ -36,7 +45,7 @@ function MyPage() {
           <td>No</td>
           <td>제목</td>
           <td>글쓴이</td>
-          <td>작성시간</td>
+          <td>작성일</td>
         </tr>
         </thead>
         <tbody>

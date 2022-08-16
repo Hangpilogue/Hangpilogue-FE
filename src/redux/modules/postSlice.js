@@ -49,7 +49,7 @@ export const deletePosts = createAsyncThunk("DELETE_POSTS", async (post)=>{
 export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async ()=> {
   try {
     const response = await apis.getMyPosts()
-    console.log(response)
+    console.log(response.data)
     return response.data.mypostlists
   } catch (err) {
     console.log(err)
@@ -68,11 +68,7 @@ export const postSlice = createSlice({
     myPosts:[]
     // playSounds
   },
-  reducers: {
-    clearMyPosts:(state,action) => {
-      state.myPosts=[]
-    }
-  },
+  reducers: {},
   extraReducers: {
     [getPosts.pending]: (state, action) => {
       state.isLoading = true
@@ -141,6 +137,6 @@ export const postSlice = createSlice({
 });
 
 
-export const {clearMyPosts} = postSlice.actions;
+export const {} = postSlice.actions;
 
 export default postSlice.reducer;
