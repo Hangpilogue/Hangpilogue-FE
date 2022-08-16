@@ -1,8 +1,21 @@
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {logIn, logOut} from "../../redux/modules/tokenSlice";
 
 function Header(props) {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
+  const {isLogin, token} = useSelector(state => state.tokenSlice)
+
+  useEffect(()=> {
+    if(token) {
+      dispatch(logIn())
+    }
+  },[])
+
+
   return (
     <StHeader>
       <div className={"leftContainer"}>
@@ -11,10 +24,26 @@ function Header(props) {
       <div className={"rightContainer"}>
         <nav>
           <StNavUl>
-            <StNavLi onClick={() => navigate("/mypage")}>마이페이지</StNavLi>
-            <StNavLi onClick={() => navigate("/post")}>포스트</StNavLi>
+            <StNavLi onClick={()=> {
+              isLogin? navigate("/mypage")
+                : alert("로그인이 필요합니다")
+            }}>마이페이지</StNavLi>
+            <StNavLi onClick={()=> {
+              isLogin? navigate("/post")
+                : alert("로그인이 필요합니다")
+            }}>포스트</StNavLi>
             <StNavLi onClick={() => navigate("/detail/:postId")}>디테일</StNavLi>
-            <StNavLi onClick={() => navigate("/login")}>로그인</StNavLi>
+            <StNavLi onClick={() => {
+              if (isLogin) {
+                dispatch(logOut())
+                alert("로그아웃 하셨습니다.")
+                navigate("/login")
+              } else {
+                navigate("/login")
+              }
+            }}>
+              {isLogin ? "로그아웃" : "로그인"}
+            </StNavLi>
           </StNavUl>
         </nav>
       </div>
@@ -33,7 +62,7 @@ const StHeader = styled.header`
 const StLogo = styled.div`
   background-image: url("/static/images/logoImage.png");
   background-repeat: no-repeat;
-  background-size:contain;
+  background-size: contain;
   height: 41px;
   width: 128px;
   cursor: pointer
