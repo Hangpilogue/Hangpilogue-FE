@@ -1,8 +1,14 @@
 import styled from "styled-components";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 function Header(props) {
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const logOut = () => {
+    removeCookie("token");
+    navigate("/login");
+  };
   return (
     <StHeader>
       <div className={"leftContainer"}>
@@ -13,42 +19,43 @@ function Header(props) {
           <StNavUl>
             <StNavLi onClick={() => navigate("/mypage")}>마이페이지</StNavLi>
             <StNavLi onClick={() => navigate("/post")}>포스트</StNavLi>
-            <StNavLi onClick={() => navigate("/detail/:postId")}>디테일</StNavLi>
+            <StNavLi onClick={() => navigate("/detail/:postId")}>
+              디테일
+            </StNavLi>
             <StNavLi onClick={() => navigate("/login")}>로그인</StNavLi>
+            <StNavLi onClick={logOut}>로그아웃</StNavLi>
           </StNavUl>
         </nav>
       </div>
     </StHeader>
   );
-};
-
+}
 
 const StHeader = styled.header`
   padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const StLogo = styled.div`
   background-image: url("/static/images/logoImage.png");
   background-repeat: no-repeat;
-  background-size:contain;
+  background-size: contain;
   height: 41px;
   width: 128px;
-  cursor: pointer
-`
-
+  cursor: pointer;
+`;
 
 const StNavUl = styled.ul`
   display: flex;
   list-style: none;
-`
+`;
 
 const StNavLi = styled.li`
   padding: 10px 20px;
   margin: 0 10px;
   cursor: pointer;
-`
+`;
 
 export default Header;
