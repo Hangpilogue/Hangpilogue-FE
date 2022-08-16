@@ -1,12 +1,15 @@
 import styled from "styled-components";
+
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {logIn, logOut} from "../../redux/modules/tokenSlice";
 
+
 function Header(props) {
   const dispatch = useDispatch()
   const navigate = useNavigate();
+
   const {isLogin, token} = useSelector(state => state.tokenSlice)
 
   useEffect(()=> {
@@ -24,6 +27,7 @@ function Header(props) {
       <div className={"rightContainer"}>
         <nav>
           <StNavUl>
+
             <StNavLi onClick={()=> {
               isLogin? navigate("/mypage")
                 : alert("로그인이 필요합니다")
@@ -44,20 +48,20 @@ function Header(props) {
             }}>
               {isLogin ? "로그아웃" : "로그인"}
             </StNavLi>
+
           </StNavUl>
         </nav>
       </div>
     </StHeader>
   );
-};
-
+}
 
 const StHeader = styled.header`
   padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const StLogo = styled.div`
   background-image: url("/static/images/logoImage.png");
@@ -65,19 +69,18 @@ const StLogo = styled.div`
   background-size: contain;
   height: 41px;
   width: 128px;
-  cursor: pointer
-`
-
+  cursor: pointer;
+`;
 
 const StNavUl = styled.ul`
   display: flex;
   list-style: none;
-`
+`;
 
 const StNavLi = styled.li`
   padding: 10px 20px;
   margin: 0 10px;
   cursor: pointer;
-`
+`;
 
 export default Header;

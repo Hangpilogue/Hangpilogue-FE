@@ -34,6 +34,10 @@ const RegisterPage = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [nicknameError, setnicknameError] = useState(false);
+  const [checkEmail, setCheckEmail] = useState({ email: "" });
+  const [checknickname, setChecknickname] = useState({ nickname: "" });
+  const [dupEmail, setDupEmail] = useState(false);
+  const [dupnickname, setDupnickname] = useState(false);
 
   const onChangeUserId = (e) => {
     const userIdRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
@@ -42,6 +46,7 @@ const RegisterPage = () => {
     else setUserIdError(true);
     setUserId(e.target.value);
     setData({ ...data, email: e.target.value });
+    setCheckEmail({ email: e.target.value });
   };
   const onChangePassword = (e) => {
     const passwordRegex =
@@ -69,6 +74,31 @@ const RegisterPage = () => {
     else setnicknameError(true);
     setnickname(e.target.value);
     setData({ ...data, nickname: e.target.value });
+    setChecknickname({ nickname: e.target.value });
+  };
+  const onCheckEmail = async () => {
+    const res = await axios
+      .post("http://taesik.shop/api/user/dup/email", checkEmail)
+      .then((res) => {
+        if (res.data.result) {
+          alert("사용가능한 이메일이야");
+          setDupEmail(true);
+        } else {
+          alert("이미 있어");
+        }
+      });
+  };
+  const onChecknickname = async () => {
+    const res = await axios
+      .post("http://taesik.shop/api/user/dup/nickname", checknickname)
+      .then((res) => {
+        if (res.data.result) {
+          alert("사용가능한 닉네임이야");
+          setDupnickname(true);
+        } else {
+          alert("이미 있어");
+        }
+      });
   };
 
   //   const validation = () => {
@@ -89,25 +119,42 @@ const RegisterPage = () => {
     if (!password) setPasswordError(true);
     if (!confirmPassword) setConfirmPasswordError(true);
     if (!nickname) setnicknameError(true);
-
-    if (userId && password && confirmPassword && nickname) return true;
-    if (userIdError) return;
     if (!userId || !nickname || !password || !confirmPassword) {
       return alert("제대로 입력해!");
     }
-    if (nicknameError) {
-      return;
+
+    // if (userId && password && confirmPassword && nickname) return true;
+
+    // if (userIdError) return;
+    // if (nicknameError) return;
+
+    // if (passwordError) return;
+    // if (confirmPasswordError) return;
+
+    // alert("아무거나");
+    if (
+      userId !== "" &&
+      nickname !== "" &&
+      password !== "" &&
+      confirmPassword !== "" &&
+      dupEmail === true &&
+      dupnickname === true
+    ) {
+      await axios
+        .post("http://taesik.shop/api/user/signup", data)
+        .then((response) => {
+          if (response.status === 400) {
+            alert("다시 한 번 확인해봐");
+          } else if (response.data.result === true) {
+            navigate("/login");
+          }
+        })
+        .catch((response) => {
+          if (response.status === 400) {
+            alert("다시 한 번 확인해봐");
+          }
+        });
     }
-    if (passwordError) return;
-    if (confirmPasswordError) {
-      return;
-    }
-    alert("아무거나");
-    await axios.post("http://taesik.shop/api/user/signup", data).then((res) => {
-      if (res.data.result === true) {
-        navigate("/login");
-      }
-    });
     //   .then(function (res) {
     //     if (res.data.code === 0) {
     //       navigate("/login");
@@ -139,9 +186,12 @@ const RegisterPage = () => {
           placeholder="아이디"
           type="email"
           value={userId}
-          onChange={onChangeUserId}
+          onChange={(e) => {
+            onChangeUserId(e);
+            setDupEmail(false);
+          }}
         />
-        <StCheckButton>중복확인</StCheckButton>
+        <StCheckButton onClick={onCheckEmail}>중복확인</StCheckButton>
       </StInputs>
       {userIdError && (
         <div style={{ color: "red" }}>이메일 형식으로 해주세요</div>
@@ -153,9 +203,12 @@ const RegisterPage = () => {
           maxLength={12}
           type="text"
           value={nickname}
-          onChange={onChangenickname}
+          onChange={(e) => {
+            onChangenickname(e);
+            setDupnickname(false);
+          }}
         />
-        <StCheckButton>중복확인</StCheckButton>
+        <StCheckButton onClick={onChecknickname}>중복확인</StCheckButton>
       </StInputs>
       {nicknameError && <div style={{ color: "red" }}>2~12글자로 해주세요</div>}
       <StInputsPw>
@@ -228,6 +281,7 @@ const StCheckButton = styled.button`
   background: #fff;
   border: 1px solid #3c39cf;
   border-radius: 2rem;
+  cursor: pointer;
 `;
 const StInputs = styled.div`
   margin-top: 20px;

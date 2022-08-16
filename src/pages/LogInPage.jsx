@@ -5,6 +5,7 @@ import axios from "axios";
 import { setCookie } from "../util/cookie";
 import {useDispatch, useSelector} from "react-redux";
 import { goToHome, setLogin } from "../redux/modules/loginCheck";
+import { useCookies } from "react-cookie";
 import {logIn} from "../redux/modules/tokenSlice";
 
 function LogInPage() {
@@ -15,6 +16,7 @@ function LogInPage() {
   const [userIdError, setUserIdError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [cookies, setCookie] = useCookies(["token"]);
   const onChangeUserId = (e) => {
     const userIdRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
     if (!e.target.value || userIdRegex.test(e.target.value))
@@ -51,17 +53,18 @@ function LogInPage() {
         // console.log(result);
         // if (email !== null && email !== "" && email !== undefined) {
         //   alert("로그인되었습니다");
-        // let expires = new Date();
-        // expires.setMinutes(expires.getMinutes() + 60);
+        let expires = new Date();
+        expires.setMinutes(expires.getMinutes() + 60);
         //   setCookie("email", `${email}`, { path: "/", expires });
         //   setCookie("nickname", `${nickname}`, { path: "/", expires });
         //   dispatch(setLogin());
         //   dispatch(goToHome(navigate));
         // }
-        const { token } = result.data;
-        // setCookie("token", `${token}`, { path: "/" });
-        document.cookie = `token=${token}`;
-        dispatch(logIn())
+
+        console.log(result);
+        // const { token } = result.data;
+        setCookie("token", result.data.token, { path: "/", expires });
+        // document.cookie = `token=${token}`;
         // dispatch(setLogin());
         navigate("/");
       })
