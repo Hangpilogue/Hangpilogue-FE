@@ -66,6 +66,7 @@ function LogInPage() {
         setCookie("token", result.data.token, { path: "/", expires });
         // document.cookie = `token=${token}`;
         // dispatch(setLogin());
+        dispatch(logIn())
         navigate("/");
       })
       .catch((e) => {

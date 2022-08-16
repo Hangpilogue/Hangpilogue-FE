@@ -12,7 +12,7 @@ function CommunityPage() {
   const {isLogin, token} = useSelector(state => state.tokenSlice)
   const [searchWord, setSearchWord] = useState("")
 
-  let [list, setList] = useState([])
+  let [list, setList] = useState(posts)
 
 
   const onChangeSearchWord = (e) => {
@@ -34,7 +34,6 @@ function CommunityPage() {
         setList(res.payload)
       })
   }, [])
-
 
   const goPost = () => {
     navigate("/post")
