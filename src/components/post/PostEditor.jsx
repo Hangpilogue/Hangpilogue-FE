@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {editPosts, postPosts} from "../../redux/modules/postSlice";
 
 
 
 const PostEditor = ({isEdit, originData}) => {
+  const inputs = useRef([])
+  const uploadImage = useRef()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   // const isLoading = useSelector(state => state.postSlice.isLoading)
@@ -29,7 +31,7 @@ const PostEditor = ({isEdit, originData}) => {
         content: originData.content,
         nickname: originData.nickname,
         img:originData.img,
-        id:originData.id
+        id:originData.postId
       })
       setPreviewImg(originData.img)
     }
@@ -59,17 +61,45 @@ const PostEditor = ({isEdit, originData}) => {
     reader.readAsDataURL(file)
   }
 
+
   const onSubmitHandler = () => {
-    dispatch(postPosts(posts))
-    alert("포스팅 완료!")
-    navigate("/")
+    for (let i = 0; i < inputs.current.length; i++) {
+      if(inputs.current[i].value.length <1) {
+        alert("빈칸이 있습니다.")
+        return
+      }
+    }
+    if(uploadImage.current.value<1) {
+      if(window.confirm("이미지 업로드 안할꺼야?")) {
+        if(isEdit) {
+          dispatch(editPosts(posts))
+          alert("수정 완료!")
+          navigate("/")
+        } else {
+          dispatch(postPosts(posts))
+          alert("포스팅 완료!")
+          navigate("/")
+        }
+      }
+    } else{
+      if(isEdit) {
+        dispatch(editPosts(posts))
+        alert("수정 완료!")
+        navigate("/")
+      } else {
+        dispatch(postPosts(posts))
+        alert("포스팅 완료!")
+        navigate("/")
+      }
+    }
   }
 
-  const onEditSubmitHandler = () => {
-    dispatch(editPosts(posts))
-    alert("수정 완료!")
-    navigate("/")
+  const onCancelHandler = () => {
+    if(window.confirm("취소하시겠습니까?")) {
+      navigate("/mypage")
+    }
   }
+
   if(isLoading===true) {
     return (
       <div>
@@ -82,7 +112,7 @@ const PostEditor = ({isEdit, originData}) => {
         <StWrapper>
           <StPostTitle>
             <label htmlFor={"title"}>게시글 제목</label>
-            <input name={"title"} value={title} onChange={onChangeHandler} id={"title"} type="text"/>
+            <input ref={(element)=>(inputs.current[0] = element)} name={"title"} value={title} onChange={onChangeHandler} id={"title"} type="text"/>
           </StPostTitle>
           <StPostImage>
             <StPostImageBox postImg={previewImg}/>
@@ -91,6 +121,7 @@ const PostEditor = ({isEdit, originData}) => {
             <label htmlFor={"img"}>파일찾기</label>
             <input type='file'
                    id={"img"}
+                   ref={uploadImage}
                    name={"img"}
                    accept='image/jpg,impge/png,image/jpeg,image/gif'
                    onChange={handleFileOnChange}>
@@ -98,16 +129,12 @@ const PostEditor = ({isEdit, originData}) => {
           </StPostImage>
           <StPostContent>
             <label htmlFor={"content"}>게시글 내용</label>
-            <textarea name={"content"} value={content} onChange={onChangeHandler} id={"content"}
+            <textarea ref={(element)=>(inputs.current[1] = element)} name={"content"} value={content} onChange={onChangeHandler} id={"content"}
                       placeholder={"후기를 남겨주세요!"}></textarea>
           </StPostContent>
           <StBtnBox>
-            {
-              isEdit
-                ?<StBtn onClick={onEditSubmitHandler} color={"green"}>수정 완료</StBtn>
-                :<StBtn onClick={onSubmitHandler} color={"green"}>완료</StBtn>
-            }
-            <StBtn color={"red"}>취소</StBtn>
+                <StBtn onClick={onSubmitHandler} color={"green"}>{isEdit?"수정":"완료"}</StBtn>
+            <StBtn onClick={onCancelHandler} color={"red"}>취소</StBtn>
           </StBtnBox>
         </StWrapper>
       </StPostPage>

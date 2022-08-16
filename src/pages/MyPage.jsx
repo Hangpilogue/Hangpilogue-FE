@@ -1,6 +1,40 @@
 import styled from "styled-components";
+import {useDispatch, useSelector} from "react-redux";
+import MyPageTableRow from "../components/myPage/MyPageTableRow";
+import {useEffect, useState} from "react";
+import {getMyPosts} from "../redux/modules/postSlice";
+import {useNavigate} from "react-router-dom";
+import {logIn} from "../redux/modules/tokenSlice";
 
 function MyPage() {
+  const dispatch = useDispatch()
+  // console.log(lista)
+  const navigate = useNavigate()
+  // const [list,setList] = useState([])
+
+
+  const {token} = useSelector(state => state.tokenSlice)
+  if(!token) {
+    alert("로그인이 필요한 기능입니다")
+    navigate("/")
+  }
+
+  useEffect(()=> {
+    if(token) {
+      dispatch(logIn())
+    }
+  },[])
+
+
+  useEffect(()=> {
+    dispatch(getMyPosts())
+  },[])
+  const list = useSelector((state)=> state.postSlice.myPosts)
+  console.log(list)
+
+  const goPost = () => {
+    navigate("/post")
+  }
 
   return (
     <StMyPage>
@@ -11,26 +45,19 @@ function MyPage() {
           <td>No</td>
           <td>제목</td>
           <td>글쓴이</td>
-          <td>작성시간</td>
+          <td>작성일</td>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>16</td>
-          <td>신상입고 기대됩니다</td>
-          <td>admin</td>
-          <td>2020-20-20</td>
-        </tr>
-        <tr>
-          <td>15</td>
-          <td>신상입고 기대됩니다</td>
-          <td>admin</td>
-          <td>2020-20-20</td>
-        </tr>
+        {
+          list.map((data)=> (
+             <MyPageTableRow {...data} key={data.postId} />
+          ))
+        }
         </tbody>
       </table>
       </div>
-        <button>글쓰기</button>
+        <button onClick={goPost}>글쓰기</button>
     </StMyPage>
   );
 };
@@ -43,7 +70,7 @@ const StMyPage = styled.div`
   align-items: center;
   flex-direction: column;
   .tableWrapper {
-    width: 80%;
+    width: 100%;
   }
   & table {
     width: 100%;

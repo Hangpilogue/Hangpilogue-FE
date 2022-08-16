@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { setCookie } from "../util/cookie";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { goToHome, setLogin } from "../redux/modules/loginCheck";
 import { useCookies } from "react-cookie";
+import {logIn} from "../redux/modules/tokenSlice";
 
 function LogInPage() {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ function LogInPage() {
         //   dispatch(setLogin());
         //   dispatch(goToHome(navigate));
         // }
+
         console.log(result);
         // const { token } = result.data;
         setCookie("token", result.data.token, { path: "/", expires });
@@ -70,6 +72,7 @@ function LogInPage() {
         console.log(e);
       });
   };
+
 
   return (
     <div>

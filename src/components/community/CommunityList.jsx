@@ -1,12 +1,15 @@
 import {FaRegCommentAlt} from "react-icons/fa";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const CommunityList = ({...data}) => {
   const navigate = useNavigate()
   const goDetail = () => {
-    navigate(`/detail/${data.id}`)
+    navigate(`/detail/${data.postId}`)
   }
+
+  // console.log(data.img)
 
   return (
     <StListLi onClick={goDetail}>
