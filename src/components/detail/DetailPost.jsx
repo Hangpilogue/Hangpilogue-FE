@@ -24,11 +24,11 @@ function DetailPost() {
   const { postId } = useParams(); // 게시물 ID받아오기
   // console.log(postId)
   const [detail, setDetail] = useState();
-  console.log(detail);
+  // console.log(detail);
 
   const getDetail = async () => {
     const data = await axios.get(`http://localhost:4000/posts/${postId}`);
-    console.log(data.data);
+    // console.log(data.data);
     setDetail(data.data);
     setLoadedImg(data.data.img);
   };
@@ -69,7 +69,7 @@ function DetailPost() {
         </div>
 
         <div className="imageContainer">
-          <div postImg={loadedImg}>
+          <div>
             <img src={loadedImg} alt="?" />
           </div>
         </div>
@@ -112,11 +112,9 @@ const DetailLayout = styled.div`
     /* border: 2px solid #aaa;
     border-radius: 4px; */
 
-
     max-width: 500px;
     min-width: 300px;
     min-height: 40vh;
-
 
     margin: 50px auto;
     & img {

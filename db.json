@@ -15,6 +15,30 @@
       "id": 2
     }
   ],
+
+  "comment": [
+    {
+      "postId":1,
+      "content":"안녕하세요 귀엽네요",
+      "nickname":"푸린"
+    },
+      {
+        "postId":1,
+        "content":"진짜 귀엽네요",
+        "nickname":"푸푸푸푸푸린"
+      },
+      {
+        "postId":2,
+        "content":"어렵다",
+        "nickname":"푸린"
+      },
+        {
+          "postId":2,
+          "content":"사람살려",
+          "nickname":"푸푸푸푸푸린"
+        }
+    ],
+
   "users": [
     {
       "email": "ckdtns@naver.com",
@@ -22,4 +46,5 @@
       "id": 1
     }
   ]
+
 }
