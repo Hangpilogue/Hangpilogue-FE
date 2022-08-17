@@ -2,13 +2,16 @@ import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
-import {editPosts, postPosts} from "../../redux/modules/postSlice";
+import {editPosts, getPosts, postPosts} from "../../redux/modules/postSlice";
+import {storage} from "../../shared/firebase";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 
 
 
 const PostEditor = ({isEdit, originData}) => {
   const inputs = useRef([])
   const uploadImage = useRef()
+  const fileLinkRef = useRef(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   // const isLoading = useSelector(state => state.postSlice.isLoading)
@@ -46,20 +49,34 @@ const PostEditor = ({isEdit, originData}) => {
     })
   }
 
-  const handleFileOnChange = (event) => {
+  const handleFileOnChange =async (event) => {
     event.preventDefault();
     let reader = new FileReader()
+
+
+    const uploaded_file = await uploadBytes(ref(storage,`images/${event.target.files[0].name}`),
+      event.target.files[0])
+
+    console.log(uploaded_file);
+
+    const fileUrl = await getDownloadURL(uploaded_file.ref)
+    console.log(fileUrl)
+
+    fileLinkRef.current = {url:fileUrl}
+
     let file = event.target.files[0]
     setPostFile(event.target.files[0])
     reader.onloadend = () => {
       setPreviewImg(reader.result)
       setPosts({
         ...posts,
-        img: reader.result
+        img: fileLinkRef.current.url
       })
     }
     reader.readAsDataURL(file)
   }
+
+  console.log(posts)
 
 
   const onSubmitHandler = () => {
@@ -73,10 +90,12 @@ const PostEditor = ({isEdit, originData}) => {
       if(window.confirm("이미지 업로드 안할꺼야?")) {
         if(isEdit) {
           dispatch(editPosts(posts))
+          dispatch(getPosts())
           alert("수정 완료!")
           navigate("/")
         } else {
           dispatch(postPosts(posts))
+          dispatch(getPosts())
           alert("포스팅 완료!")
           navigate("/")
         }
@@ -84,10 +103,12 @@ const PostEditor = ({isEdit, originData}) => {
     } else{
       if(isEdit) {
         dispatch(editPosts(posts))
+        dispatch(getPosts())
         alert("수정 완료!")
         navigate("/")
       } else {
         dispatch(postPosts(posts))
+        dispatch(getPosts())
         alert("포스팅 완료!")
         navigate("/")
       }

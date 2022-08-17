@@ -21,7 +21,7 @@ export const getPosts = createAsyncThunk("GET_POSTS", async () => {
 export const postPosts = createAsyncThunk("POST_POSTS", async (post) => {
   try {
     const response = await apis.postPosts(post);
-    return response.data.postlists;
+    return post;
   } catch (err) {
     console.log(err.response.data);
   }
@@ -64,28 +64,18 @@ export const postSlice = createSlice({
     isLoading: false,
     status: "Welcome",
     posts: [],
+
     myPosts: [],
+
     // playSounds
   },
   reducers: {},
   extraReducers: {
-    [getPosts.pending]: (state, action) => {
-      state.isLoading = true;
-      state.status = "pending";
-    },
-    [getPosts.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.status = "fulfilled";
-      state.posts = [...action.payload];
-    },
-    [getPosts.rejected]: (state, action) => {
-      state.isLoading = true;
-      state.status = "rejected";
-    },
     [postPosts.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.status = "fulfilled";
       state.posts = [...state.posts, action.payload];
+      console.log(state.posts);
     },
     [postPosts.pending]: (state, action) => {
       state.isLoading = true;
@@ -99,6 +89,20 @@ export const postSlice = createSlice({
       state.isLoading = false;
       state.status = "pending";
     },
+    [getPosts.pending]: (state, action) => {
+      state.isLoading = true;
+      state.status = "pending";
+    },
+    [getPosts.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.status = "fulfilled";
+      state.posts = [...action.payload];
+    },
+    [getPosts.rejected]: (state, action) => {
+      state.isLoading = true;
+      state.status = "rejected";
+    },
+
     [editPosts.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.status = "fulfilled";

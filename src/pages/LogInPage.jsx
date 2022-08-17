@@ -67,6 +67,7 @@ function LogInPage() {
         dispatch(logIn());
         // document.cookie = `token=${token}`;
         // dispatch(setLogin());
+        dispatch(logIn())
         navigate("/");
       })
       .catch((e) => {

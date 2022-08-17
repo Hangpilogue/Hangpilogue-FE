@@ -12,6 +12,7 @@ function InputBox(props) {
     action = null,
     value = "",
     title = null,
+    onChange,
   } = props;
 
   return (
@@ -30,6 +31,8 @@ function InputBox(props) {
         ref={useRef}
         // onChange={(e)=> {
         // const currentValue = e.target.value;}}
+
+        onChange={onChange}
       ></input>
     </TextInputBox>
   );
