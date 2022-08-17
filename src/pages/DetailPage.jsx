@@ -1,6 +1,5 @@
 //src.pages.DetailPage.jsx
 
-import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import DetailPost from "../components/detail/DetailPost";

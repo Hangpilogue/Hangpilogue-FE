@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { postPosts } from "../../redux/modules/postSlice";
+import {
+  getComment,
+  postComment,
+  editComment,
+  deleteComment,
+} from "../../redux/modules/commentSlice";
 
 import styled from "styled-components";
 import Button from "../common/Button";
@@ -13,32 +18,29 @@ function CommentPost() {
   const dispatch = useDispatch();
   const { postId } = useParams();
 
-  const [comment, setComment] = useState({
-    nickname: "",
-    content: "",
-  });
-
-  const onclickAddComment = (e) => {
-    e.preventDefault();
-    if (comment.content() === "") {
-      return alert("내용을 입력해주세요.");
-    }
-    dispatch(postPosts({ postId: postId, ...comment }));
-    setComment({
-      nickname: "",
-      content: "",
-    });
-  };
+  const [comment, setComment] = useState("");
 
   const onChangeComment = (e) => {
-    const comment = e.target.value;
-    setComment({ ...comment });
-    console.log(e.target.value);
+    // const comment = e.target.value;
+    setComment(e.target.value);
+    // console.log(e.target.value);
   };
 
   useEffect(() => {
-    console.log("useEffect");
+    // console.log("useEffect");
   }, []);
+
+  const onClickAddComment = (e) => {
+    e.preventDefault();
+
+    if (comment.content === "") {
+      return alert("내용을 입력해주세요.");
+    }
+    // console.log(postId);
+    // console.log(comment);
+    dispatch(postComment({ postId, comment }));
+    setComment("");
+  };
 
   return (
     <>
@@ -56,7 +58,7 @@ function CommentPost() {
           <Button
             type="button"
             buttonText={"댓글달기"}
-            action={onclickAddComment}
+            action={onClickAddComment}
           />
         </div>
       </StCommentLayout>
