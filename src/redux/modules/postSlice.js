@@ -21,7 +21,7 @@ export const getPosts = createAsyncThunk("GET_POSTS", async () => {
 export const postPosts = createAsyncThunk("POST_POSTS", async (post) => {
   try {
     const response = await apis.postPosts(post)
-    return response.data.postlists
+    return post
   } catch (err) {
     console.log(err.response.data)
   }
@@ -37,7 +37,7 @@ export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
   }
 })
 
-export const deletePosts = createAsyncThunk("DELETE_POSTS", async (post)=>{
+export const deletePosts = createAsyncThunk("DELETE_POSTS", async (post) => {
   try {
     await apis.deletePosts(post)
     return post
@@ -46,7 +46,7 @@ export const deletePosts = createAsyncThunk("DELETE_POSTS", async (post)=>{
   }
 })
 
-export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async ()=> {
+export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async () => {
   try {
     const response = await apis.getMyPosts()
     console.log(response.data)
@@ -65,28 +65,16 @@ export const postSlice = createSlice({
     isLoading: false,
     status: "Welcome",
     posts: [],
-    myPosts:[]
+    myPosts: []
     // playSounds
   },
   reducers: {},
   extraReducers: {
-    [getPosts.pending]: (state, action) => {
-      state.isLoading = true
-      state.status = "pending"
-    },
-    [getPosts.fulfilled]: (state, action) => {
-      state.isLoading = false
-      state.status = "fulfilled"
-      state.posts = [...action.payload]
-    },
-    [getPosts.rejected]: (state, action) => {
-      state.isLoading = true
-      state.status = "rejected"
-    },
     [postPosts.fulfilled]: (state, action) => {
       state.isLoading = false
       state.status = "fulfilled"
       state.posts = [...state.posts, action.payload]
+      console.log(state.posts)
     },
     [postPosts.pending]: (state, action) => {
       state.isLoading = true
@@ -100,6 +88,20 @@ export const postSlice = createSlice({
       state.isLoading = false
       state.status = "pending"
     },
+    [getPosts.pending]: (state, action) => {
+      state.isLoading = true
+      state.status = "pending"
+    },
+    [getPosts.fulfilled]: (state, action) => {
+      state.isLoading = false
+      state.status = "fulfilled"
+      state.posts = [...action.payload]
+    },
+    [getPosts.rejected]: (state, action) => {
+      state.isLoading = true
+      state.status = "rejected"
+    },
+
     [editPosts.fulfilled]: (state, action) => {
       state.isLoading = false
       state.status = "fulfilled"
@@ -122,7 +124,7 @@ export const postSlice = createSlice({
     [deletePosts.fulfilled]: (state, action) => {
       state.isLoading = false
       state.status = "fulfilled"
-      state.posts = state.posts.filter((data)=> {
+      state.posts = state.posts.filter((data) => {
         return parseInt(data.id) !== parseInt(action.payload)
       })
     },
@@ -130,7 +132,7 @@ export const postSlice = createSlice({
       state.isLoading = false
       state.status = "rejected"
     },
-    [getMyPosts.fulfilled]:(state,action)=> {
+    [getMyPosts.fulfilled]: (state, action) => {
       state.myPosts = [...action.payload]
     }
   }
