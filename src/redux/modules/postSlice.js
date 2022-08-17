@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apis from "../../shared/Request";
 // import PPIKKA from "../../sounds/피카츄.mp3";
 //
@@ -11,53 +11,52 @@ import apis from "../../shared/Request";
 //
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   try {
-    const response = await apis.getPosts()
-    return response.data.postlists
+    const response = await apis.getPosts();
+    return response.data.postlists;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-})
+});
 
 export const postPosts = createAsyncThunk("POST_POSTS", async (post) => {
   try {
-    const response = await apis.postPosts(post)
-    return response.data.postlists
+    const response = await apis.postPosts(post);
+    return response.data.postlists;
   } catch (err) {
-    console.log(err.response.data)
+    console.log(err.response.data);
   }
-})
+});
 
 export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
   try {
-    const response = await apis.editPosts(post)
-    console.log(post)
-    return post
+    const response = await apis.editPosts(post);
+    console.log(post);
+    return post;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-})
+});
 
-export const deletePosts = createAsyncThunk("DELETE_POSTS", async (post)=>{
+export const deletePosts = createAsyncThunk("DELETE_POSTS", async (post) => {
   try {
-    await apis.deletePosts(post)
-    return post
+    await apis.deletePosts(post);
+    return post;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-})
+});
 
-export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async ()=> {
+export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async () => {
   try {
-    const response = await apis.getMyPosts()
-    console.log(response.data)
-    return response.data.mypostlists
+    const response = await apis.getMyPosts();
+    console.log(response.data);
+    return response.data.mypostlists;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-})
+});
 
 // export const getMyPosts = createSlice()
-
 
 export const postSlice = createSlice({
   name: "post",
@@ -65,77 +64,76 @@ export const postSlice = createSlice({
     isLoading: false,
     status: "Welcome",
     posts: [],
-    myPosts:[]
+    myPosts: [],
     // playSounds
   },
   reducers: {},
   extraReducers: {
     [getPosts.pending]: (state, action) => {
-      state.isLoading = true
-      state.status = "pending"
+      state.isLoading = true;
+      state.status = "pending";
     },
     [getPosts.fulfilled]: (state, action) => {
-      state.isLoading = false
-      state.status = "fulfilled"
-      state.posts = [...action.payload]
+      state.isLoading = false;
+      state.status = "fulfilled";
+      state.posts = [...action.payload];
     },
     [getPosts.rejected]: (state, action) => {
-      state.isLoading = true
-      state.status = "rejected"
+      state.isLoading = true;
+      state.status = "rejected";
     },
     [postPosts.fulfilled]: (state, action) => {
-      state.isLoading = false
-      state.status = "fulfilled"
-      state.posts = [...state.posts, action.payload]
+      state.isLoading = false;
+      state.status = "fulfilled";
+      state.posts = [...state.posts, action.payload];
     },
     [postPosts.pending]: (state, action) => {
-      state.isLoading = true
-      state.status = "pending"
+      state.isLoading = true;
+      state.status = "pending";
     },
     [postPosts.rejected]: (state, action) => {
-      state.isLoading = true
-      state.status = "rejected"
+      state.isLoading = true;
+      state.status = "rejected";
     },
     [editPosts.pending]: (state, action) => {
-      state.isLoading = false
-      state.status = "pending"
+      state.isLoading = false;
+      state.status = "pending";
     },
     [editPosts.fulfilled]: (state, action) => {
-      state.isLoading = false
-      state.status = "fulfilled"
+      state.isLoading = false;
+      state.status = "fulfilled";
       state.posts = state.posts.map((data) => {
         if (data.postId === action.payload.id) {
-          return {...data, ...action.payload}
+          return { ...data, ...action.payload };
         } else {
-          return data
+          return data;
         }
-      })
+      });
     },
     [editPosts.rejected]: (state, action) => {
-      state.isLoading = false
-      state.status = "rejected"
+      state.isLoading = false;
+      state.status = "rejected";
     },
     [deletePosts.pending]: (state, action) => {
-      state.isLoading = false
-      state.status = "pending"
+      state.isLoading = false;
+      state.status = "pending";
     },
     [deletePosts.fulfilled]: (state, action) => {
-      state.isLoading = false
-      state.status = "fulfilled"
-      state.posts = state.posts.filter((data)=> {
-        return parseInt(data.id) !== parseInt(action.payload)
-      })
+      state.isLoading = false;
+      state.status = "fulfilled";
+      state.posts = state.posts.filter((data) => {
+        return parseInt(data.id) !== parseInt(action.payload);
+      });
     },
     [deletePosts.rejected]: (state, action) => {
-      state.isLoading = false
-      state.status = "rejected"
+      state.isLoading = false;
+      state.status = "rejected";
     },
-    [getMyPosts.fulfilled]:(state,action)=> {
-      state.myPosts = [...action.payload]
-    }
-  }
+    [getMyPosts.fulfilled]: (state, action) => {
+      state.myPosts = [...action.payload];
+    },
+  },
 });
-
 
 export const {} = postSlice.actions;
 

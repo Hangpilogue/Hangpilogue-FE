@@ -1,66 +1,62 @@
 import styled from "styled-components";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MyPageTableRow from "../components/myPage/MyPageTableRow";
-import {useEffect, useState} from "react";
-import {getMyPosts} from "../redux/modules/postSlice";
-import {useNavigate} from "react-router-dom";
-import {logIn} from "../redux/modules/tokenSlice";
+import { useEffect, useState } from "react";
+import { getMyPosts } from "../redux/modules/postSlice";
+import { useNavigate } from "react-router-dom";
+import { logIn } from "../redux/modules/tokenSlice";
 
 function MyPage() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // console.log(lista)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const [list,setList] = useState([])
 
-
-  const {token} = useSelector(state => state.tokenSlice)
-  if(!token) {
-    alert("로그인이 필요한 기능입니다")
-    navigate("/")
+  const { token } = useSelector((state) => state.tokenSlice);
+  if (!token) {
+    alert("로그인이 필요한 기능입니다");
+    navigate("/");
   }
 
-  useEffect(()=> {
-    if(token) {
-      dispatch(logIn())
+  useEffect(() => {
+    if (token) {
+      dispatch(logIn());
     }
-  },[])
+  }, []);
 
-
-  useEffect(()=> {
-    dispatch(getMyPosts())
-  },[])
-  const list = useSelector((state)=> state.postSlice.myPosts)
-  console.log(list)
+  useEffect(() => {
+    dispatch(getMyPosts());
+  }, []);
+  const list = useSelector((state) => state.postSlice.myPosts);
+  console.log(list);
 
   const goPost = () => {
-    navigate("/post")
-  }
+    navigate("/post");
+  };
 
   return (
     <StMyPage>
       <div className="tableWrapper">
-      <table>
-        <thead>
-        <tr>
-          <td>No</td>
-          <td>제목</td>
-          <td>글쓴이</td>
-          <td>작성일</td>
-        </tr>
-        </thead>
-        <tbody>
-        {
-          list.map((data)=> (
-             <MyPageTableRow {...data} key={data.postId} />
-          ))
-        }
-        </tbody>
-      </table>
+        <table>
+          <thead>
+            <tr>
+              <td>No</td>
+              <td>제목</td>
+              <td>글쓴이</td>
+              <td>작성일</td>
+            </tr>
+          </thead>
+          <tbody>
+            {list.map((data) => (
+              <MyPageTableRow {...data} key={data.postId} />
+            ))}
+          </tbody>
+        </table>
       </div>
-        <button onClick={goPost}>글쓰기</button>
+      <button onClick={goPost}>글쓰기</button>
     </StMyPage>
   );
-};
+}
 
 const StMyPage = styled.div`
   width: 100%;
@@ -76,9 +72,8 @@ const StMyPage = styled.div`
     width: 100%;
     border-top: 1px solid black;
     border-collapse: collapse;
-    
   }
-  
+
   & thead td {
     &:nth-child(3) {
       width: 15%;
@@ -117,7 +112,7 @@ const StMyPage = styled.div`
       color: #999;
     }
   }
-  
+
   & button {
     margin-top: 30px;
     padding: 10px 30px;
@@ -127,6 +122,6 @@ const StMyPage = styled.div`
     background-color: black;
     cursor: pointer;
   }
-`
+`;
 
 export default MyPage;

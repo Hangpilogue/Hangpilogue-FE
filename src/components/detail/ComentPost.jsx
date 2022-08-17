@@ -2,20 +2,8 @@
 
 import styled from "styled-components";
 
-
-
-
-
 function CommentPost() {
-
-  return (
-      <>
-
-      </>
-  );
-};
-
-
+  return <></>;
+}
 
 export default CommentPost;
-

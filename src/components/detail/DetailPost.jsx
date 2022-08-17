@@ -112,11 +112,9 @@ const DetailLayout = styled.div`
     /* border: 2px solid #aaa;
     border-radius: 4px; */
 
-
     max-width: 500px;
     min-width: 300px;
     min-height: 40vh;
-
 
     margin: 50px auto;
     & img {
