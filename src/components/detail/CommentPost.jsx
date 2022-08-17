@@ -37,7 +37,7 @@ function CommentPost() {
   };
 
   useEffect(() => {
-    console.log("한번만 실행");
+    console.log("useEffect");
   }, []);
 
   return (

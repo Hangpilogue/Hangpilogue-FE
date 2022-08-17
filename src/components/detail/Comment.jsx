@@ -29,7 +29,7 @@ function Comment() {
   useEffect(() => {
     dispatch(getPosts(postId)); // get요청이 성공하면,commentSlice 리듀서로 인해 innitailState에 값이 들어간다.
     //그 뒤에 18번째 줄 commentData에 찍힌다.
-    console.log("한번만 실행하도록 하는 의존성배열의 빈 값");
+    console.log("useEffect");
   }, []);
 
   const onClickCommentDeleteButton = () => {
