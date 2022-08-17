@@ -6,7 +6,7 @@ let x, USER_TOKEN;
 
 //axios 인스턴스
 const api = axios.create({
-  baseURL: "http://taesik.shop/api/",
+  baseURL: process.env.REACT_APP_DB_URL,
   timeout: 2000,
 })
 
