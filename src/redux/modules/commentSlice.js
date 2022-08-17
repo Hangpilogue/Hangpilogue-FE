@@ -16,14 +16,14 @@ export const getComment = createAsyncThunk("GET_COMMENT", async () => {
 })
 
 
-export const postComment = createAsyncThunk("POST_COMMENT", async ({comment, postId}) => {
+export const postComment = createAsyncThunk("POST_COMMENT", async ({content, postId}) => {
   // console.log(postId)
   try {
-    const response = await CommentApis.postComment({comment, postId})
+    const response = await CommentApis.postComment({content, postId})
     // console.log(response)
     // return response.data //true
-    console.log(comment)
-    return comment
+    console.log(content)
+    return content
     // console.log(comments) //리턴하면 함수끝남
 
   } catch (err) {

@@ -18,11 +18,11 @@ function CommentPost() {
   const dispatch = useDispatch();
   const { postId } = useParams();
 
-  const [comment, setComment] = useState("");
+  const [content, setContent] = useState("");
 
   const onChangeComment = (e) => {
     // const comment = e.target.value;
-    setComment(e.target.value);
+    setContent(e.target.value);
     // console.log(e.target.value);
   };
 
@@ -33,13 +33,13 @@ function CommentPost() {
   const onClickAddComment = (e) => {
     e.preventDefault();
 
-    if (comment.content === "") {
+    if (content === "") {
       return alert("내용을 입력해주세요.");
     }
     // console.log(postId);
-    // console.log(comment);
-    dispatch(postComment({ postId, comment }));
-    setComment("");
+    // console.log(content);
+    dispatch(postComment({ postId, content }));
+    setContent("");
   };
 
   return (
@@ -50,7 +50,7 @@ function CommentPost() {
           placeholder={"댓글 내용( 100자 이내 )"}
           max={100}
           required
-          value={comment.content}
+          value={content}
           onChange={onChangeComment}
         />
 

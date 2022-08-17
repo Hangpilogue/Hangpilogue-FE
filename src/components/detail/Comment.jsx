@@ -31,7 +31,7 @@ function Comment() {
 
   const getDetail = async () => {
     const data = await axios.get(`http://taesik.shop/api/posts/${postId}`);
-    // console.log(data.data.postone.Comments);
+    console.log(data.data.postone.Comments);
     setCommentList(data.data.postone.Comments);
   };
 
@@ -68,8 +68,8 @@ function Comment() {
           (data) => (
             <div className="containerBox">
               <div className="contentBox">
-                <div>aa{data.nickname}:</div>
-                <div>댕같다리{data.content}</div>
+                <div>{data.nickname}:</div>
+                <div>{data.content}</div>
               </div>
 
               <div className="buttonBox">

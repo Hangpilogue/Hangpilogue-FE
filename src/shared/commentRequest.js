@@ -30,9 +30,9 @@ api.interceptors.request.use((config) => {
 
 const CommentApis = {
   getComment: (postId) => api.get(`/posts/${postId}`),
-  postComment: ({comment, postId}) => api.post(`/posts/${postId}/comment`, {comment}),
-  editComment: ({comment, postId}) => api.put(`/posts/${postId}/commentId`, {comment}),
-  deleteComment: ({comment, postId}) => api.delete(`/posts/${postId}/commentId`)
+  postComment: ({content, postId}) => api.post(`/posts/${postId}/comment`, {content}),
+  editComment: ({content, postId}) => api.put(`/posts/${postId}/commentId`, {content}),
+  deleteComment: ({content, postId}) => api.delete(`/posts/${postId}/commentId`)
 }
 
 export default CommentApis
