@@ -1,30 +1,31 @@
-import {FaRegCommentAlt} from "react-icons/fa";
+import { FaRegCommentAlt } from "react-icons/fa";
 import styled from "styled-components";
-import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const CommunityList = ({...data}) => {
-  const navigate = useNavigate()
+const CommunityList = ({ ...data }) => {
+  const navigate = useNavigate();
   const goDetail = () => {
-    navigate(`/detail/${data.postId}`)
-  }
+    navigate(`/detail/${data.postId}`);
+  };
 
   // console.log(data.img)
 
   return (
     <StListLi onClick={goDetail}>
-      <StImgArea className="img" postImg={data.img} >
-
-      </StImgArea>
+      <StImgArea className="img" postImg={data.img}></StImgArea>
       <div className="textBox">
         <div className="title">{data.title}</div>
         {/*서버연동하면 복구해야함*/}
         {/*<div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>{data.commentCount}</div>*/}
-        <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>99</div>
+        <div className="commentCount">
+          <FaRegCommentAlt className={"commentIcon"} />
+          99
+        </div>
       </div>
     </StListLi>
-  )
-}
+  );
+};
 
 const StListLi = styled.li`
   width: 300px;
@@ -54,16 +55,15 @@ const StListLi = styled.li`
       margin-right: 10px;
     }
   }
-
-`
+`;
 
 const StImgArea = styled.div`
   height: 300px;
   border: 1px solid black;
-  background-image: url(${(props) => (props.postImg)});
+  background-image: url(${(props) => props.postImg});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-`
+`;
 
-export default CommunityList
+export default CommunityList;

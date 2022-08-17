@@ -28,6 +28,10 @@ function InputBox(props) {
         maxLength={max}
         minLength={min}
         required={required}
+        ref={useRef}
+        // onChange={(e)=> {
+        // const currentValue = e.target.value;}}
+
         onChange={onChange}
       ></input>
     </TextInputBox>

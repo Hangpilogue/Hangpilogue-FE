@@ -21,6 +21,7 @@ import {
 
 function Comment() {
   const { postId } = useParams();
+
   const dispatch = useDispatch();
   const commentData = useSelector((state) => state.commentSlice); //state.commentSlice => initialstate값을 가져온다
   console.log(commentData); //초기값이 빈 값이 나온다/slice에 초기값이 비었기 때문 (정상)
