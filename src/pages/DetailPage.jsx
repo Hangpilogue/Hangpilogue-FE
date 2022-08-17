@@ -7,6 +7,7 @@ import { getDetail } from "../redux/modules/detailSlice";
 
 import DetailPost from "../components/detail/DetailPost";
 import Comment from "../components/detail/Comment";
+import CommentPost from "../components/detail/CommentPost";
 
 function DetailPage() {
   const detailSlice = useSelector((state) => state.detailSlice.posts);
@@ -20,12 +21,11 @@ function DetailPage() {
 
   return (
     <>
-      <div></div>
-      <DetailPost
-      // list={{...detail}}
-      // key= {detailSlice.id}
-      />
-      <Comment />
+      <div>
+        <DetailPost />
+        <CommentPost />
+        <Comment />
+      </div>
     </>
   );
 }

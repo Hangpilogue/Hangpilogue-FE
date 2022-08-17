@@ -12,6 +12,7 @@ function InputBox(props) {
     action = null,
     value = "",
     title = null,
+    onChange,
   } = props;
 
   return (
@@ -27,9 +28,7 @@ function InputBox(props) {
         maxLength={max}
         minLength={min}
         required={required}
-        // ref={useRef}
-        // onChange={(e)=> {
-        // const currentValue = e.target.value;}}
+        onChange={onChange}
       ></input>
     </TextInputBox>
   );
@@ -38,7 +37,7 @@ function InputBox(props) {
 export default InputBox;
 
 const TextInputBox = styled.div`
-  max-width: 400px;
+  max-width: 500px;
   min-width: 400px;
   margin: 0 auto 10px;
   display: flex;
