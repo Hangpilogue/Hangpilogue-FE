@@ -4,7 +4,7 @@ import axios from "axios";
 let x, USER_TOKEN;
 
 
-
+//axios 인스턴스
 const api = axios.create({
   baseURL: "http://taesik.shop/api/",
   timeout: 2000,
@@ -13,12 +13,11 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   function getCookie(cookie_name) {
     let val = document.cookie.split(';');
-
     for (let i = 0; i < val.length; i++) {
       x = val[i].substr(0, val[i].indexOf('='));
       USER_TOKEN = val[i].substr(val[i].indexOf('=') + 1);
       x = x.replace(/^\s+|\s+$/g, '');
-      if (x == cookie_name) {
+      if (x === cookie_name) {
         return USER_TOKEN
       }
     }

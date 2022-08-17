@@ -4,6 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPosts} from "../redux/modules/postSlice";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import apis from "../shared/Request";
 
 function CommunityPage() {
   const dispatch = useDispatch()
@@ -26,6 +29,8 @@ function CommunityPage() {
       })
     )
   }
+
+
 
 
   useEffect(() => {
