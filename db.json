@@ -15,6 +15,7 @@
       "id": 2
     }
   ],
+
   "comment": [
     {
       "postId":1,
@@ -33,9 +34,17 @@
       },
         {
           "postId":2,
-          "content":"토나와",
+          "content":"사람살려",
           "nickname":"푸푸푸푸푸린"
         }
-    ]
+    ],
+
+  "users": [
+    {
+      "email": "ckdtns@naver.com",
+      "password": "$2a$10$xcHaXEhmqRNUIYXSa3veLOoHtKrxtKMQ4G6spf1Tn2t5vz9lciRXa",
+      "id": 1
+    }
+  ]
 
 }

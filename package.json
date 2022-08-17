@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.27.2",
+    "firebase": "^9.9.2",
     "json-server": "^0.17.0",
     "json-server-auth": "^2.1.0",
     "react": "^18.2.0",
@@ -26,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server-start": "yarn json-server --watch db.json --port 4000"
+    "server-start": "yarn json-server-auth --watch db.json --port 4000"
   },
   "eslintConfig": {
     "extends": [

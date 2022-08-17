@@ -4,15 +4,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPosts} from "../redux/modules/postSlice";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import apis from "../shared/Request";
 
 function CommunityPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {posts, isLoading, status} = useSelector((state) => state.postSlice)
-
+  const {isLogin, token} = useSelector(state => state.tokenSlice)
   const [searchWord, setSearchWord] = useState("")
 
-  let [list, setList] = useState([])
+  let [list, setList] = useState(posts)
 
 
   const onChangeSearchWord = (e) => {
@@ -28,21 +31,22 @@ function CommunityPage() {
   }
 
 
+
+
   useEffect(() => {
     dispatch(getPosts())
-      .then((res)=> {//최신순정렬
-        setList(res.payload.reverse())
+      .then((res) => {
+        setList(res.payload)
       })
   }, [])
-
 
   const goPost = () => {
     navigate("/post")
   }
 
   //무한스크롤
-  window.onscroll = ()=> {
-    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+  window.onscroll = () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
     }
   }
 
@@ -60,14 +64,19 @@ function CommunityPage() {
           <input onChange={onChangeSearchWord} type="text"/>
           <div>
             <button onClick={onSearchHandler}>게시글찾기</button>
-            <button onClick={goPost}>추가하기</button>
+            <button onClick={() => {
+              isLogin
+                ? goPost()
+                : alert("로그인이 필요합니다")
+            }}>추가하기
+            </button>
           </div>
         </StBtnBox>
         <div>
           <StListUl>
             {
               list.map((data) => (
-                <CommunityList {...data} key={data.id}/>
+                <CommunityList {...data} key={data.postId}/>
               ))
             }
           </StListUl>
