@@ -3,45 +3,33 @@
 import {useEffect, useRef, useState} from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  getComment,
-  postComment,
-  editComment,
-  deleteComment,
-} from "../../redux/modules/commentSlice";
+import { postComment } from "../../redux/modules/commentSlice";
 
 import styled from "styled-components";
 import Button from "../common/Button";
-import InputBox from "../common/InputBox";
+import { useRef } from "react";
 
 function CommentPost() {
   const dispatch = useDispatch();
   const { postId } = useParams();
-  const {commentInput} = useRef()
-
   const [content, setContent] = useState("");
+  const commentInput = useRef();
 
   const onChangeComment = (e) => {
-    // const comment = e.target.value;
     setContent(e.target.value);
-    // console.log(e.target.value);
   };
 
-  useEffect(() => {
-    // console.log("useEffect");
-  }, []);
+  useEffect(() => {}, []);
 
   const onClickAddComment = (e) => {
     e.preventDefault();
-
     if (content === "") {
       return alert("내용을 입력해주세요.");
     }
-    // console.log(postId);
-    // console.log(content);
+    //댓글달기 인풋창이 빈 값일 때는 내용입력요청 알림창 뜨기
     dispatch(postComment({ postId, content }));
     setContent("");
-    dispatch(getComment());
+    commentInput.current.value = ""; // 댓글달기를 완료하면 인풋값 없애기
   };
 
   return (
@@ -69,11 +57,9 @@ function CommentPost() {
 export default CommentPost;
 
 const StCommentLayout = styled.div`
-  /* background-color: aliceblue; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* flex-direction: row; */
 
   border: 1px solid #eee;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -86,4 +72,9 @@ const StInput = styled.input`
   flex: 1;
   outline: none;
   border: none;
+`;
+
+const StInput = styled.input`
+  padding: 10px 10px;
+  width: 500px;
 `;

@@ -41,7 +41,6 @@ const RegisterPage = () => {
 
   const onChangeUserId = (e) => {
     const userIdRegex =
-
       /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
     if (!e.target.value || userIdRegex.test(e.target.value))
@@ -199,66 +198,64 @@ const RegisterPage = () => {
   };
   return (
     <div>
-      <StImage />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignContent: "center",
-        }}
-      ></div>
-      <StInputs>
-        <StInput
-          placeholder="아이디"
-          value={userId}
-          onChange={(e) => {
-            onChangeUserId(e);
-            setDupEmail(false);
-          }}
-        />
-        <StCheckButton onClick={onCheckEmail}>중복확인</StCheckButton>
-      </StInputs>
-      {userIdError && (
-        <div style={{ color: "red" }}>이메일 형식으로 해주세요</div>
-      )}
-      <StInputs>
-        <StInput
-          placeholder="닉네임"
-          minLength={2}
-          maxLength={12}
-          type="text"
-          value={nickname}
-          onChange={(e) => {
-            onChangenickname(e);
-            setDupnickname(false);
-          }}
-        />
-        <StCheckButton onClick={onChecknickname}>중복확인</StCheckButton>
-      </StInputs>
-      {nicknameError && <div style={{ color: "red" }}>2~12글자로 해주세요</div>}
-      <StInputsPw>
-        <StInputPw
-          placeholder="비밀번호"
-          value={password}
-          onChange={onChangePassword}
-        />
-        {passwordError && (
-          <div style={{ color: "red" }}>
-            영문과 숫자, 특수문자(!@#$%^&*)조합의 8-13자의 비밀번호를
-            설정해주세요.
-          </div>
+      <StDiv>
+        <StImg alt="totoro" src="img/totoro.png.png" />
+      </StDiv>
+      <StContainer>
+        <StInputs>
+          <StInput
+            placeholder="아이디"
+            value={userId}
+            onChange={(e) => {
+              onChangeUserId(e);
+              setDupEmail(false);
+            }}
+          />
+          <StCheckButton onClick={onCheckEmail}>중복확인</StCheckButton>
+        </StInputs>
+        {userIdError && (
+          <div style={{ color: "red" }}>이메일 형식으로 해주세요</div>
         )}
+        <StInputs>
+          <StInput
+            placeholder="닉네임"
+            minLength={2}
+            maxLength={12}
+            type="text"
+            value={nickname}
+            onChange={(e) => {
+              onChangenickname(e);
+              setDupnickname(false);
+            }}
+          />
+          <StCheckButton onClick={onChecknickname}>중복확인</StCheckButton>
+        </StInputs>
+        {nicknameError && (
+          <div style={{ color: "red" }}>2~12글자로 해주세요</div>
+        )}
+        <StInputsPw>
+          <StInputPw
+            placeholder="비밀번호"
+            value={password}
+            onChange={onChangePassword}
+          />
+          {passwordError && (
+            <div style={{ color: "red", width: "300px" }}>
+              영문과 숫자, 특수문자(!@#$%^&*)조합의 8-13자의 비밀번호를
+              설정해주세요.
+            </div>
+          )}
 
-        <StInputPw
-          placeholder="비밀번호 재확인"
-          value={confirmPassword}
-          onChange={onChangeConfirmPassword}
-        />
-        {confirmPasswordError && (
-          <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다</div>
-        )}
-      </StInputsPw>
+          <StInputPw
+            placeholder="비밀번호 재확인"
+            value={confirmPassword}
+            onChange={onChangeConfirmPassword}
+          />
+          {confirmPasswordError && (
+            <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다</div>
+          )}
+        </StInputsPw>
+      </StContainer>
       <StButtons>
         <StButton onClick={onSubmit}>완료</StButton>
         <StButton onClick={() => navigate("/login")}>취소</StButton>
@@ -269,13 +266,29 @@ const RegisterPage = () => {
 
 export default RegisterPage;
 
-const StImage = styled.div`
-  background-image: url("http://jphollic.com/data/editor/goods/1/2020/03/1793_15843466948824.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
+// const StImage = styled.div`
+//   background-image: url("http://jphollic.com/data/editor/goods/1/2020/03/1793_15843466948824.jpg");
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   width: 500px;
+//   height: 350px;
+//   margin: auto;
+// `;
+const StImg = styled.img`
   width: 500px;
   height: 350px;
   margin: auto;
+  background-size: contain;
+`;
+const StDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const StContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const StInput = styled.input`
   width: 300px;
@@ -311,7 +324,7 @@ const StCheckButton = styled.button`
 `;
 const StInputs = styled.div`
   margin-top: 20px;
-  margin-left: 303px;
+  margin-left: 93px;
 `;
 const StInputsPw = styled.div`
   display: flex;
@@ -321,5 +334,4 @@ const StInputPw = styled.input`
   width: 300px;
   padding: 10px;
   margin-top: 20px;
-  margin-left: 303px;
 `;

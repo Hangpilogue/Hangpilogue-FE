@@ -32,7 +32,7 @@ const CommentApis = {
   getComment: (postId) => api.get(`/posts/${postId}`),
   postComment: ({content, postId}) => api.post(`/posts/${postId}/comment`, {content}),
   editComment: ({content, postId}) => api.put(`/posts/${postId}/commentId`, {content}),
-  deleteComment: ({content, postId}) => api.delete(`/posts/${postId}/commentId`)
+  deleteComment: ({content, postId, commentId}) => api.delete(`/posts/${postId}/${commentId}`)
 }
 
 export default CommentApis
