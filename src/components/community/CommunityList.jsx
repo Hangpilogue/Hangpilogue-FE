@@ -9,6 +9,7 @@ const CommunityList = ({ ...data }) => {
     navigate(`/detail/${data.postId}`);
   };
 
+  console.log(data)
   // console.log(data.img)
 
   return (
@@ -16,12 +17,7 @@ const CommunityList = ({ ...data }) => {
       <StImgArea className="img" postImg={data.img}></StImgArea>
       <div className="textBox">
         <div className="title">{data.title}</div>
-        {/*서버연동하면 복구해야함*/}
-        {/*<div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>{data.commentCount}</div>*/}
-        <div className="commentCount">
-          <FaRegCommentAlt className={"commentIcon"} />
-          99
-        </div>
+        <div className="commentCount"><FaRegCommentAlt className={"commentIcon"}/>{data.countcomment}</div>
       </div>
     </StListLi>
   );
