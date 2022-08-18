@@ -35,17 +35,12 @@ function LogInPage() {
     setLoginData({ ...loginData, password: e.target.value });
   };
   const onSubmit = async () => {
-    // if (!userId) setUserIdError(true);
-    // if (!password) setPasswordError(true);
-
-    // if (userId && password) return true;
-    // if (userIdError) return;
-    // if (!userId || !password) {
-    //   return alert("제대로 입력해!");
-    // }
-    // if (passwordError) return;
-
-    // alert("아무거나");
+    if (userId !== "" && password !== "") {
+      if (userIdError === true && passwordError === true) {
+        alert("양식에 맞게 입력해");
+        return;
+      }
+    }
     axios
       .post("http://taesik.shop/api/user/login", loginData)
       .then((result) => {

@@ -20,7 +20,7 @@ function Header(props) {
   return (
     <StHeader>
       <div className={"leftContainer"}>
-        <StLogo onClick={() => navigate("/")}></StLogo>
+        <StLogo onClick={() => navigate("/")}>Hangpliogue</StLogo>
       </div>
       <div className={"rightContainer"}>
         <nav>
@@ -73,6 +73,11 @@ const StLogo = styled.div`
   height: 41px;
   width: 128px;
   cursor: pointer;
+  padding-left: 50px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 700;
 `;
 
 const StNavUl = styled.ul`

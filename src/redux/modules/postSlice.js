@@ -38,10 +38,8 @@ export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
 
 export const deletePosts = createAsyncThunk("DELETE_POSTS", async (postId) => {
   try {
-
     await apis.deletePosts(postId)
     return postId
-
   } catch (err) {
     console.log(err);
   }

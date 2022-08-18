@@ -25,13 +25,11 @@ const StListLi = styled.li`
   margin: 10px;
   cursor: pointer;
   background-color: rgba(255,255,255,0.5);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   & .textBox {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    border-bottom: 1px solid #777;
-    border-left: 1px solid #777;
-    border-right: 1px solid #777;
     border-radius: 0 0 5px 5px;
 
     & .title {
@@ -51,7 +49,6 @@ const StListLi = styled.li`
 
 const StImgArea = styled.div`
   height: 300px;
-  border: 1px solid black;
   background-image: url(${(props) => props.postImg});
   background-size: cover;
   background-repeat: no-repeat;

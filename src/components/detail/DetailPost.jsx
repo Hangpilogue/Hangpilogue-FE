@@ -32,9 +32,13 @@ function DetailPost() {
     navigate(`/edit/${postId}`);
   };
   //게시물삭제버튼
+
   const onClickDeleteButton = () => {
-    dispatch(deletePosts(postId));
-    navigate(-1, {replace: false});
+    dispatch(deletePosts(postId)).then((res)=> {
+      console.log(res)
+    })
+    alert("게시물이 삭제되었습니다.");
+    navigate(-1, { replace: false });
   };
 
   return (
