@@ -19,13 +19,13 @@ export const getComment = createAsyncThunk("GET_COMMENT", async (postId) => {
 export const postComment = createAsyncThunk(
   "POST_COMMENT",
   async ({ content, postId }) => {
-    // console.log(postId)
+    // console.log(content)
     try {
       const response = await CommentApis.postComment({ content, postId });
-      // console.log(response)
+      console.log(response.config.data)
       // return response.data //true
-      console.log(content);
-      return content;
+      // console.log(content);
+      return response.config.data;
       // console.log(comments) //리턴하면 함수끝남
     } catch (err) {
       console.log(err);
@@ -44,9 +44,10 @@ export const editComment = createAsyncThunk("EDIT_COMMENT", async (post) => {
 
 export const deleteComment = createAsyncThunk(
   "DELETE_COMMENT",
-  async (posts) => {
+  async (commentId) => {
     try {
-      const response = await CommentApis.deleteComment(posts);
+      const response = await CommentApis.deleteComment(commentId)
+      console.log(response)
       return response.data;
     } catch (err) {
       console.log(err);
@@ -80,16 +81,7 @@ const initialState = {
 export const commentSlice = createSlice({
   name: "comments",
   initialState,
-  // : {
-  //   isLoading:false,
-  //   status:"Hello",
-  //   comments: [],
-  // }
-  reducers: {
-    clearComment: (state) => {
-      state.data.content = "";
-    },
-  },
+  reducers: {},
   extraReducers: {
     // [_getCommentPostList.fulfilled] : (state, {payload} ) => [...payload],
     // [_addComment.fulfilled] : (state, {payload} ) => [...state,payload],
@@ -115,8 +107,9 @@ export const commentSlice = createSlice({
       state.commentsPostId.isLoading = false;
       // state.commentsPostId.data.push(action.payload);
       //react에서는 push X => 원본배열 망가뜨림
-      console.log(state.commentsPostId.data)
-      
+      // console.log(state)
+      // console.log(action.payload)
+      state.comments.data=[...state.comments.data, action.payload]
     },
 
     [postComment.rejected]: (state, action) => {
@@ -154,5 +147,5 @@ export const commentSlice = createSlice({
   },
 });
 
-export const { clearComment } = commentSlice.actions;
+export const { } = commentSlice.actions;
 export default commentSlice.reducer;
