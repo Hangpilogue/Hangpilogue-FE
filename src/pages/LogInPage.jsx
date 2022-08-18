@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { setCookie } from "../util/cookie";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { goToHome, setLogin } from "../redux/modules/loginCheck";
 import { useCookies } from "react-cookie";
-import {logIn} from "../redux/modules/tokenSlice";
+import { logIn } from "../redux/modules/tokenSlice";
 
 function LogInPage() {
   const dispatch = useDispatch();
@@ -68,11 +68,12 @@ function LogInPage() {
         // dispatch(setLogin());
         navigate("/");
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((res) => {
+        if (res.response.status === 401) {
+          alert(res.response.data);
+        }
       });
   };
-
 
   return (
     <div>

@@ -40,7 +40,8 @@ const RegisterPage = () => {
   const [dupnickname, setDupnickname] = useState(false);
 
   const onChangeUserId = (e) => {
-    const userIdRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+    const userIdRegex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     if (!e.target.value || userIdRegex.test(e.target.value))
       setUserIdError(false);
     else setUserIdError(true);
@@ -77,26 +78,41 @@ const RegisterPage = () => {
     setChecknickname({ nickname: e.target.value });
   };
   const onCheckEmail = async () => {
+    if (userIdError) {
+      alert("이메일이라고!!");
+      return;
+    }
     const res = await axios
       .post("http://taesik.shop/api/user/dup/email", checkEmail)
       .then((res) => {
-        if (res.data.result) {
+        console.log(res);
+        if (res.status === 200) {
           alert("사용가능한 이메일이야");
           setDupEmail(true);
-        } else {
-          alert("이미 있어");
+        }
+      })
+      .catch((res) => {
+        if (res.response.status === 409) {
+          alert("이미 존재하는 이메일이야");
         }
       });
   };
   const onChecknickname = async () => {
+    if (nicknameError) {
+      alert("형식에 맞게 써");
+      return;
+    }
     const res = await axios
       .post("http://taesik.shop/api/user/dup/nickname", checknickname)
       .then((res) => {
-        if (res.data.result) {
+        if (res.status === 200) {
           alert("사용가능한 닉네임이야");
           setDupnickname(true);
-        } else {
-          alert("이미 있어");
+        }
+      })
+      .catch((res) => {
+        if (res.response.status === 409) {
+          alert("이미 존재하는 닉네임이야");
         }
       });
   };
@@ -132,26 +148,35 @@ const RegisterPage = () => {
     // if (confirmPasswordError) return;
 
     // alert("아무거나");
+
     if (
       userId !== "" &&
       nickname !== "" &&
       password !== "" &&
-      confirmPassword !== "" &&
-      dupEmail === true &&
-      dupnickname === true
+      confirmPassword !== ""
     ) {
+      if (dupEmail === false) {
+        alert("이메일 중복확인을 완료해");
+        return;
+      } else if (dupnickname === false) {
+        alert("닉네임 중복확인을 완료해");
+        return;
+      }
       await axios
         .post("http://taesik.shop/api/user/signup", data)
         .then((response) => {
-          if (response.status === 400) {
-            alert("다시 한 번 확인해봐");
-          } else if (response.data.result === true) {
+          // if (response.response.status === 400) {
+          //   alert("다시 한 번 확인해봐");
+          // } else
+          if (response.status === 200) {
             navigate("/login");
           }
         })
         .catch((response) => {
-          if (response.status === 400) {
+          if (response.response.status === 500) {
             alert("다시 한 번 확인해봐");
+          } else if (response.response.status === 400) {
+            alert("제대로 작성해");
           }
         });
     }
