@@ -17,10 +17,6 @@ function InputBox(props) {
 
   return (
     <TextInputBox>
-      {/* <label htmlFor={name}>
-        {title}
-        {required}
-      </label> */}
       <input
         type="text"
         placeholder={`${placeholder}`}

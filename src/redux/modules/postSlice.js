@@ -12,7 +12,6 @@ import apis from "../../shared/Request";
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   try {
     const response = await apis.getPosts();
-    console.log(response.data.postlists)
     return response.data.postlists;
   } catch (err) {
     console.log(err);
@@ -51,7 +50,6 @@ export const deletePosts = createAsyncThunk("DELETE_POSTS", async (postId) => {
 export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async () => {
   try {
     const response = await apis.getMyPosts();
-    console.log(response.data);
     return response.data.mypostlists;
   } catch (err) {
     console.log(err);

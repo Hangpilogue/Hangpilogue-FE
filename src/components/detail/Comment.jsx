@@ -1,13 +1,12 @@
-//src/components/posts/Comment
+
 
 import styled from "styled-components";
 import Button from "../common/Button";
 
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 import { editPosts } from "../../redux/modules/postSlice";
 import { deleteComment } from "../../redux/modules/commentSlice";
@@ -15,10 +14,6 @@ import { deleteComment } from "../../redux/modules/commentSlice";
 function Comment() {
   const { postId } = useParams();
   const dispatch = useDispatch();
-  const commentData = useSelector((state) => state.commentSlice);
-  const [inputValue, setInputValue] = useState("");
-  const [editComment, setEditComment] = useState(false);
-  const navigate = useNavigate();
   const [commentList, setCommentList] = useState([]);
   const commentId = useParams();
 

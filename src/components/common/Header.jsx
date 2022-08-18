@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn, logOut } from "../../redux/modules/tokenSlice";
 

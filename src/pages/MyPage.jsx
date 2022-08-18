@@ -2,18 +2,13 @@ import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import MyPageTableRow from "../components/myPage/MyPageTableRow";
 import {useEffect, useState} from "react";
-import {getMyPosts} from "../redux/modules/postSlice";
 import {useNavigate} from "react-router-dom";
 import {logIn} from "../redux/modules/tokenSlice";
-import {createAsyncThunk} from "@reduxjs/toolkit";
 import apis from "../shared/Request";
 
 function MyPage() {
   const dispatch = useDispatch();
-  // console.log(lista)
   const navigate = useNavigate();
-  // const [list,setList] = useState([])
-
   const [allList, setAllList] = useState([])
   let [currentList, setCurrentList] = useState([])
   const [currentPage, setCurrentPage] = useState([])
@@ -53,7 +48,6 @@ function MyPage() {
   }
 
   const onPrev = () => {
-    console.log(currentPage)
     setPage(1)
     const getMyPosts = async () => {
       try {

@@ -8,7 +8,6 @@ import CommentApis from "../../shared/commentRequest";
 export const getComment = createAsyncThunk("GET_COMMENT", async (postId) => {
   try {
     const response = await CommentApis.getComment(postId)
-    // console.log(response)
     return response.data
   } catch (err) {
     console.log(err)
@@ -19,14 +18,12 @@ export const getComment = createAsyncThunk("GET_COMMENT", async (postId) => {
 export const postComment = createAsyncThunk(
   "POST_COMMENT",
   async ({ content, postId }) => {
-    // console.log(content)
+
     try {
       const response = await CommentApis.postComment({ content, postId });
-      console.log(response.config.data)
-      // return response.data //true
-      // console.log(content);
+
       return response.config.data;
-      // console.log(comments) //리턴하면 함수끝남
+
     } catch (err) {
       console.log(err);
     }
@@ -47,7 +44,6 @@ export const deleteComment = createAsyncThunk(
   async (commentId) => {
     try {
       const response = await CommentApis.deleteComment(commentId)
-      console.log(response)
       return response.data;
     } catch (err) {
       console.log(err);

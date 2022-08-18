@@ -1,17 +1,12 @@
 import { FaRegCommentAlt } from "react-icons/fa";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const CommunityList = ({ ...data }) => {
   const navigate = useNavigate();
   const goDetail = () => {
     navigate(`/detail/${data.postId}`);
   };
-
-  console.log(data)
-  // console.log(data.img)
-
   return (
     <StListLi onClick={goDetail}>
       <StImgArea className="img" postImg={data.img}></StImgArea>
@@ -29,6 +24,7 @@ const StListLi = styled.li`
   overflow: hidden;
   margin: 10px;
   cursor: pointer;
+  background-color: rgba(255,255,255,0.5);
   & .textBox {
     display: flex;
     justify-content: space-between;

@@ -6,7 +6,6 @@ import axios from "axios";
 export const getDetail = createAsyncThunk("GET_DETAIL", async (id) => {
   try {
     const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
-    console.log(response);
     return response.data;
   } catch (err) {
     console.log(err);

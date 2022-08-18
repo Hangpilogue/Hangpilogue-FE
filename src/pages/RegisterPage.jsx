@@ -181,20 +181,6 @@ const RegisterPage = () => {
           }
         });
     }
-    //   .then(function (res) {
-    //     if (res.data.code === 0) {
-    //       navigate("/login");
-    //     } else {
-    //       let message = res.data.message;
-    //       if (res.data.code === 10000) {
-    //         message =
-    //           "User ID is duplicated. Please enter a different User ID. ";
-    //       }
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
   };
   return (
     <div>

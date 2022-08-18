@@ -16,7 +16,6 @@ function DetailPost() {
   const navigate = useNavigate();
   const { postId } = useParams(); // 게시물 ID받아오기
   const [detailList, setDetailList] = useState([]);
-  const postList = useSelector((state) => state.postSlice.posts[postId]);
 
   const getDetail = async () => {
     const data = await axios.get(`http://taesik.shop/api/posts/${postId}`);

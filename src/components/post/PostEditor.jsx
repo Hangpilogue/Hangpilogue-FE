@@ -56,9 +56,7 @@ const PostEditor = ({isEdit, originData}) => {
     let reader = new FileReader()
     const uploaded_file = await uploadBytes(ref(storage,`images/${event.target.files[0].name}`),
       event.target.files[0])
-    console.log(uploaded_file);
     const fileUrl = await getDownloadURL(uploaded_file.ref)
-    console.log(fileUrl)
     fileLinkRef.current = {url:fileUrl}
     let file = event.target.files[0]
     setPostFile(event.target.files[0])

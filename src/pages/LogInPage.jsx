@@ -49,24 +49,9 @@ function LogInPage() {
     axios
       .post("http://taesik.shop/api/user/login", loginData)
       .then((result) => {
-        // let { email, nickname } = result.data;
-        // console.log(result);
-        // if (email !== null && email !== "" && email !== undefined) {
-        //   alert("로그인되었습니다");
         let expires = new Date();
         expires.setMinutes(expires.getMinutes() + 60);
-        //   setCookie("email", `${email}`, { path: "/", expires });
-        //   setCookie("nickname", `${nickname}`, { path: "/", expires });
-        //   dispatch(setLogin());
-        //   dispatch(goToHome(navigate));
-        // }
-
-        console.log(result);
-        // const { token } = result.data;
         setCookie("token", result.data.token, { path: "/", expires });
-        dispatch(logIn());
-        // document.cookie = `token=${token}`;
-        // dispatch(setLogin());
         dispatch(logIn());
         navigate("/");
       })
