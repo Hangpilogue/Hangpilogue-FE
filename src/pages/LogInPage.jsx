@@ -64,8 +64,10 @@ function LogInPage() {
         console.log(result);
         // const { token } = result.data;
         setCookie("token", result.data.token, { path: "/", expires });
+        dispatch(logIn());
         // document.cookie = `token=${token}`;
         // dispatch(setLogin());
+        dispatch(logIn())
         navigate("/");
       })
       .catch((res) => {

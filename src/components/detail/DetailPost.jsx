@@ -7,42 +7,41 @@ import Button from "../common/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getDetail } from "../../redux/modules/detailSlice";
+import { getPosts, deletePosts } from "../../redux/modules/postSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function DetailPost() {
   // const { id, title, content, nickname, img } = props.detail;
   // console.log(title)
-
-  // const dispatch = useDispatch();
-  // const Detail = useSelector( state => state )
-  // console.log(Detail.title)
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loadedImg, setLoadedImg] = useState();
-  // const [ detail, setDetail ] = useState([]);
-
   const { postId } = useParams(); // 게시물 ID받아오기
-  // console.log(postId)
-  const [detail, setDetail] = useState();
-  console.log(detail);
+  // console.log(postId);
+  const postList = useSelector((state) => state.postSlice.posts[postId]);
+  // console.log(postList);
+  const [detailList, setDetailList] = useState([]);
+  // console.log(detailList);
 
   const getDetail = async () => {
-    const data = await axios.get(`http://localhost:4000/posts/${postId}`);
-    console.log(data.data);
-    setDetail(data.data);
-    setLoadedImg(data.data.img);
+    const data = await axios.get(`http://taesik.shop/api/posts/${postId}`);
+    // console.log(data);
+    setDetailList(data.data.postone);
   };
 
   useEffect(() => {
+    dispatch(getPosts(postId));
     getDetail();
   }, []);
 
+  //EditPage로 이동
   const onClickEditButton = () => {
     navigate(`/edit/${postId}`);
   };
 
   const onClickDeleteButton = () => {
-    navigate(`/posts`);
+    dispatch(deletePosts(postId));
+    navigate(-1, { replace: false });
   };
 
   return (
@@ -50,9 +49,10 @@ function DetailPost() {
       <DetailLayout>
         <div className="container">
           <div className="titleContainer">
-            <span> {detail?.title} </span>
-            <span> {detail?.nickname} </span>
-            <span> {detail?.id} </span>
+            <h1> {detailList.title} </h1>
+            <span> 작성자 : {detailList.nickname} </span>
+            <hr></hr>
+            <span> {postId}번째 게시물 </span>
           </div>
           <div className="buttonContainer">
             <Button
@@ -69,12 +69,12 @@ function DetailPost() {
         </div>
 
         <div className="imageContainer">
-          <div postImg={loadedImg}>
-            <img src={loadedImg} alt="?" />
+          <div>
+            <img src={detailList.img} alt="?" />
           </div>
         </div>
         <div className="textContainer">
-          <div>{detail?.content} </div>
+          <div>{detailList.content} </div>
         </div>
       </DetailLayout>
     </>
@@ -112,11 +112,9 @@ const DetailLayout = styled.div`
     /* border: 2px solid #aaa;
     border-radius: 4px; */
 
-
     max-width: 500px;
     min-width: 300px;
     min-height: 40vh;
-
 
     margin: 50px auto;
     & img {

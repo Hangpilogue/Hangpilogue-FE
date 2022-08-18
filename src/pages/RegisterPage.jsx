@@ -41,7 +41,9 @@ const RegisterPage = () => {
 
   const onChangeUserId = (e) => {
     const userIdRegex =
+
       /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
     if (!e.target.value || userIdRegex.test(e.target.value))
       setUserIdError(false);
     else setUserIdError(true);
@@ -209,7 +211,6 @@ const RegisterPage = () => {
       <StInputs>
         <StInput
           placeholder="아이디"
-          type="email"
           value={userId}
           onChange={(e) => {
             onChangeUserId(e);
@@ -244,8 +245,8 @@ const RegisterPage = () => {
         />
         {passwordError && (
           <div style={{ color: "red" }}>
-            영문과 숫자 조합의 8-13자의 비밀번호를 설정해주세요.
-            특수문자(!@#$%^&*)도 사용 가능합니다.
+            영문과 숫자, 특수문자(!@#$%^&*)조합의 8-13자의 비밀번호를
+            설정해주세요.
           </div>
         )}
 
