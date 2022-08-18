@@ -223,6 +223,7 @@ const RegisterPage = () => {
           <StInputPw
             placeholder="비밀번호"
             value={password}
+            type={"password"}
             onChange={onChangePassword}
           />
           {passwordError && (
@@ -235,6 +236,7 @@ const RegisterPage = () => {
           <StInputPw
             placeholder="비밀번호 재확인"
             value={confirmPassword}
+            type={"password"}
             onChange={onChangeConfirmPassword}
           />
           {confirmPasswordError && (
