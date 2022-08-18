@@ -6,26 +6,19 @@ import Button from "../common/Button";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getDetail } from "../../redux/modules/detailSlice";
 import { getPosts, deletePosts } from "../../redux/modules/postSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function DetailPost() {
-  // const { id, title, content, nickname, img } = props.detail;
-  // console.log(title)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { postId } = useParams(); // 게시물 ID받아오기
-  // console.log(postId);
-  const postList = useSelector((state) => state.postSlice.posts[postId]);
-  // console.log(postList);
   const [detailList, setDetailList] = useState([]);
-  // console.log(detailList);
+  const postList = useSelector((state) => state.postSlice.posts[postId]);
 
   const getDetail = async () => {
     const data = await axios.get(`http://taesik.shop/api/posts/${postId}`);
-    // console.log(data);
     setDetailList(data.data.postone);
   };
 
@@ -38,7 +31,7 @@ function DetailPost() {
   const onClickEditButton = () => {
     navigate(`/edit/${postId}`);
   };
-
+  //게시물삭제버튼
   const onClickDeleteButton = () => {
     dispatch(deletePosts(postId));
     navigate(-1, { replace: false });
@@ -84,7 +77,6 @@ function DetailPost() {
 export default DetailPost;
 
 const DetailLayout = styled.div`
-  /* background-color: aliceblue; */
   border: 2px solid #aaa;
   border-radius: 4px;
 
@@ -109,9 +101,6 @@ const DetailLayout = styled.div`
   }
 
   .imageContainer {
-    /* border: 2px solid #aaa;
-    border-radius: 4px; */
-
     max-width: 500px;
     min-width: 300px;
     min-height: 40vh;
