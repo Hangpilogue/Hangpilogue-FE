@@ -33,7 +33,7 @@ const apis = {
   getMyPosts: ()=> api.get(`/posts/myposts`),
   postPosts: (posts) => api.post("/posts", {...posts}),
   editPosts: (posts) => api.put(`/posts/${posts.id}`, posts),
-  deletePosts: (posts) => api.delete(`/posts/${posts}`)
+  deletePosts: (postId) => api.delete(`/posts/${postId}`)
 }
 
 export default apis

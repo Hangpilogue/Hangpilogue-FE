@@ -7,7 +7,7 @@ import Button from "../common/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getDetail } from "../../redux/modules/detailSlice";
-import { getPosts } from "../../redux/modules/postSlice";
+import { getPosts, deletePosts } from "../../redux/modules/postSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -34,12 +34,14 @@ function DetailPost() {
     getDetail();
   }, []);
 
+  //EditPage로 이동
   const onClickEditButton = () => {
     navigate(`/edit/${postId}`);
   };
 
   const onClickDeleteButton = () => {
-    navigate(`/posts`);
+    dispatch(deletePosts(postId));
+    navigate(-1, { replace: false });
   };
 
   return (
