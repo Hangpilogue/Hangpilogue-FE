@@ -5,9 +5,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import CommentApis from "../../shared/commentRequest";
 
 
-export const getComment = createAsyncThunk("GET_COMMENT", async () => {
+export const getComment = createAsyncThunk("GET_COMMENT", async (postId) => {
   try {
-    const response = await CommentApis.getComment()
+    const response = await CommentApis.getComment(postId)
     // console.log(response)
     return response.data
   } catch (err) {
@@ -22,7 +22,7 @@ export const postComment = createAsyncThunk("POST_COMMENT", async ({content, pos
     const response = await CommentApis.postComment({content, postId})
     // console.log(response)
     // return response.data //true
-    console.log(content)
+    // console.log(content)
     return content
     // console.log(comments) //리턴하면 함수끝남
 
@@ -111,7 +111,10 @@ export const commentSlice = createSlice({
     },
     [postComment.fulfilled]: (state, action) => {
       state.commentsPostId.isLoading = false;
-      state.commentsPostId.data.push(action.payload);
+      // state.commentsPostId.data.push(action.payload);
+      //react에서는 push X => 원본배열 망가뜨림
+      console.log(state.commentsPostId.data)
+      
     },
     
     [postComment.rejected]: (state, action) => {

@@ -17,7 +17,11 @@ import {
   postPosts,
 } from "../../redux/modules/postSlice";
 
-// import { _getCommentPostList } from "../../redux/modules/commentSlice";
+import {
+  getComment,
+  editComment,
+  deleteComment,
+} from "../../redux/modules/commentSlice";
 
 function Comment() {
   const { postId } = useParams();
@@ -43,7 +47,7 @@ function Comment() {
   }, []);
 
   const onClickCommentDeleteButton = () => {
-    dispatch(deletePosts()); //작성자id랑 코멘트작성자id같아야함
+    // dispatch(deleteComment());
   };
 
   const onClickCommentEditButton = () => {
@@ -65,8 +69,8 @@ function Comment() {
         ))} */}
         {commentList.map(
           // map함수는 배열에만 돌릴 수 있다. => []해주고 스프레드 문법
-          (data) => (
-            <div className="containerBox">
+          (data, i) => (
+            <div className="containerBox" key={i}>
               <div className="contentBox">
                 <div>{data.nickname}:</div>
                 <div>{data.content}</div>
@@ -98,6 +102,7 @@ const StCommentList = styled.div`
   background-color: aliceblue;
   height: 350px;
   overflow: auto;
+  margin: 50px;
 
   display: flex; //블럭속성을 풀어줌
   flex-direction: column; //세로정렬

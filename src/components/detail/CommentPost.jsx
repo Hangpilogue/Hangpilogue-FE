@@ -40,6 +40,7 @@ function CommentPost() {
     // console.log(content);
     dispatch(postComment({ postId, content }));
     setContent("");
+    dispatch(getComment());
   };
 
   return (
