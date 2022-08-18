@@ -40,7 +40,9 @@ const RegisterPage = () => {
   const [dupnickname, setDupnickname] = useState(false);
 
   const onChangeUserId = (e) => {
-    const userIdRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+    const userIdRegex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
     if (!e.target.value || userIdRegex.test(e.target.value))
       setUserIdError(false);
     else setUserIdError(true);
@@ -77,26 +79,41 @@ const RegisterPage = () => {
     setChecknickname({ nickname: e.target.value });
   };
   const onCheckEmail = async () => {
+    if (userIdError) {
+      alert("이메일이라고!!");
+      return;
+    }
     const res = await axios
       .post("http://taesik.shop/api/user/dup/email", checkEmail)
       .then((res) => {
-        if (res.data.result) {
+        console.log(res);
+        if (res.status === 200) {
           alert("사용가능한 이메일이야");
           setDupEmail(true);
-        } else {
-          alert("이미 있어");
+        }
+      })
+      .catch((res) => {
+        if (res.response.status === 409) {
+          alert("이미 존재하는 이메일이야");
         }
       });
   };
   const onChecknickname = async () => {
+    if (nicknameError) {
+      alert("형식에 맞게 써");
+      return;
+    }
     const res = await axios
       .post("http://taesik.shop/api/user/dup/nickname", checknickname)
       .then((res) => {
-        if (res.data.result) {
+        if (res.status === 200) {
           alert("사용가능한 닉네임이야");
           setDupnickname(true);
-        } else {
-          alert("이미 있어");
+        }
+      })
+      .catch((res) => {
+        if (res.response.status === 409) {
+          alert("이미 존재하는 닉네임이야");
         }
       });
   };
@@ -132,26 +149,35 @@ const RegisterPage = () => {
     // if (confirmPasswordError) return;
 
     // alert("아무거나");
+
     if (
       userId !== "" &&
       nickname !== "" &&
       password !== "" &&
-      confirmPassword !== "" &&
-      dupEmail === true &&
-      dupnickname === true
+      confirmPassword !== ""
     ) {
+      if (dupEmail === false) {
+        alert("이메일 중복확인을 완료해");
+        return;
+      } else if (dupnickname === false) {
+        alert("닉네임 중복확인을 완료해");
+        return;
+      }
       await axios
         .post("http://taesik.shop/api/user/signup", data)
         .then((response) => {
-          if (response.status === 400) {
-            alert("다시 한 번 확인해봐");
-          } else if (response.data.result === true) {
+          // if (response.response.status === 400) {
+          //   alert("다시 한 번 확인해봐");
+          // } else
+          if (response.status === 200) {
             navigate("/login");
           }
         })
         .catch((response) => {
-          if (response.status === 400) {
+          if (response.response.status === 500) {
             alert("다시 한 번 확인해봐");
+          } else if (response.response.status === 400) {
+            alert("제대로 작성해");
           }
         });
     }
@@ -172,67 +198,64 @@ const RegisterPage = () => {
   };
   return (
     <div>
-      <StImage />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignContent: "center",
-        }}
-      ></div>
-      <StInputs>
-        <StInput
-          placeholder="아이디"
-          type="email"
-          value={userId}
-          onChange={(e) => {
-            onChangeUserId(e);
-            setDupEmail(false);
-          }}
-        />
-        <StCheckButton onClick={onCheckEmail}>중복확인</StCheckButton>
-      </StInputs>
-      {userIdError && (
-        <div style={{ color: "red" }}>이메일 형식으로 해주세요</div>
-      )}
-      <StInputs>
-        <StInput
-          placeholder="닉네임"
-          minLength={2}
-          maxLength={12}
-          type="text"
-          value={nickname}
-          onChange={(e) => {
-            onChangenickname(e);
-            setDupnickname(false);
-          }}
-        />
-        <StCheckButton onClick={onChecknickname}>중복확인</StCheckButton>
-      </StInputs>
-      {nicknameError && <div style={{ color: "red" }}>2~12글자로 해주세요</div>}
-      <StInputsPw>
-        <StInputPw
-          placeholder="비밀번호"
-          value={password}
-          onChange={onChangePassword}
-        />
-        {passwordError && (
-          <div style={{ color: "red" }}>
-            영문과 숫자 조합의 8-13자의 비밀번호를 설정해주세요.
-            특수문자(!@#$%^&*)도 사용 가능합니다.
-          </div>
+      <StDiv>
+        <StImg alt="totoro" src="img/totoro.png.png" />
+      </StDiv>
+      <StContainer>
+        <StInputs>
+          <StInput
+            placeholder="아이디"
+            value={userId}
+            onChange={(e) => {
+              onChangeUserId(e);
+              setDupEmail(false);
+            }}
+          />
+          <StCheckButton onClick={onCheckEmail}>중복확인</StCheckButton>
+        </StInputs>
+        {userIdError && (
+          <div style={{ color: "red" }}>이메일 형식으로 해주세요</div>
         )}
+        <StInputs>
+          <StInput
+            placeholder="닉네임"
+            minLength={2}
+            maxLength={12}
+            type="text"
+            value={nickname}
+            onChange={(e) => {
+              onChangenickname(e);
+              setDupnickname(false);
+            }}
+          />
+          <StCheckButton onClick={onChecknickname}>중복확인</StCheckButton>
+        </StInputs>
+        {nicknameError && (
+          <div style={{ color: "red" }}>2~12글자로 해주세요</div>
+        )}
+        <StInputsPw>
+          <StInputPw
+            placeholder="비밀번호"
+            value={password}
+            onChange={onChangePassword}
+          />
+          {passwordError && (
+            <div style={{ color: "red", width: "300px" }}>
+              영문과 숫자, 특수문자(!@#$%^&*)조합의 8-13자의 비밀번호를
+              설정해주세요.
+            </div>
+          )}
 
-        <StInputPw
-          placeholder="비밀번호 재확인"
-          value={confirmPassword}
-          onChange={onChangeConfirmPassword}
-        />
-        {confirmPasswordError && (
-          <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다</div>
-        )}
-      </StInputsPw>
+          <StInputPw
+            placeholder="비밀번호 재확인"
+            value={confirmPassword}
+            onChange={onChangeConfirmPassword}
+          />
+          {confirmPasswordError && (
+            <div style={{ color: "red" }}>비밀번호가 일치하지 않습니다</div>
+          )}
+        </StInputsPw>
+      </StContainer>
       <StButtons>
         <StButton onClick={onSubmit}>완료</StButton>
         <StButton onClick={() => navigate("/login")}>취소</StButton>
@@ -243,13 +266,29 @@ const RegisterPage = () => {
 
 export default RegisterPage;
 
-const StImage = styled.div`
-  background-image: url("http://jphollic.com/data/editor/goods/1/2020/03/1793_15843466948824.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
+// const StImage = styled.div`
+//   background-image: url("http://jphollic.com/data/editor/goods/1/2020/03/1793_15843466948824.jpg");
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   width: 500px;
+//   height: 350px;
+//   margin: auto;
+// `;
+const StImg = styled.img`
   width: 500px;
   height: 350px;
   margin: auto;
+  background-size: contain;
+`;
+const StDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const StContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const StInput = styled.input`
   width: 300px;
@@ -285,7 +324,7 @@ const StCheckButton = styled.button`
 `;
 const StInputs = styled.div`
   margin-top: 20px;
-  margin-left: 303px;
+  margin-left: 93px;
 `;
 const StInputsPw = styled.div`
   display: flex;
@@ -295,5 +334,4 @@ const StInputPw = styled.input`
   width: 300px;
   padding: 10px;
   margin-top: 20px;
-  margin-left: 303px;
 `;

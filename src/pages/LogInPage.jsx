@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { setCookie } from "../util/cookie";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { goToHome, setLogin } from "../redux/modules/loginCheck";
 import { useCookies } from "react-cookie";
-import {logIn} from "../redux/modules/tokenSlice";
+import { logIn } from "../redux/modules/tokenSlice";
 
 function LogInPage() {
   const dispatch = useDispatch();
@@ -64,20 +64,24 @@ function LogInPage() {
         console.log(result);
         // const { token } = result.data;
         setCookie("token", result.data.token, { path: "/", expires });
+        dispatch(logIn());
         // document.cookie = `token=${token}`;
         // dispatch(setLogin());
-        dispatch(logIn())
+        dispatch(logIn());
         navigate("/");
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((res) => {
+        if (res.response.status === 401) {
+          alert(res.response.data);
+        }
       });
   };
 
-
   return (
     <div>
-      <StImage />
+      <StDiv>
+        <StImg alt="totoro" src="img/totoro.png.png" />
+      </StDiv>
       <div
         style={{
           display: "flex",
@@ -132,13 +136,23 @@ function LogInPage() {
 
 export default LogInPage;
 
-const StImage = styled.div`
-  background-image: url("http://jphollic.com/data/editor/goods/1/2020/03/1793_15843466948824.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
+// const StImage = styled.div`
+//   background-image: src("images/totoro.png");
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   width: 500px;
+//   height: 350px;
+//   margin: auto;
+// `;
+const StImg = styled.img`
   width: 500px;
   height: 350px;
   margin: auto;
+  background-size: contain;
+`;
+const StDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 const StInput = styled.input`
   width: 300px;

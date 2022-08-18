@@ -1,62 +1,51 @@
 //src/components/posts/CommentPost
 
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { postPosts } from "../../redux/modules/postSlice";
+import { postComment } from "../../redux/modules/commentSlice";
 
 import styled from "styled-components";
 import Button from "../common/Button";
-import InputBox from "../common/InputBox";
 
 function CommentPost() {
   const dispatch = useDispatch();
   const { postId } = useParams();
-
-  const [comment, setComment] = useState({
-    nickname: "",
-    content: "",
-  });
-
-  const onclickAddComment = (e) => {
-    e.preventDefault();
-    if (comment.content() === "") {
-      return alert("내용을 입력해주세요.");
-    }
-    dispatch(postPosts({ postId: postId, ...comment }));
-    setComment({
-      nickname: "",
-      content: "",
-    });
-  };
+  const [content, setContent] = useState("");
+  const commentInput = useRef();
 
   const onChangeComment = (e) => {
-    const comment = e.target.value;
-    setComment({ ...comment });
-    console.log(e.target.value);
+    setContent(e.target.value);
   };
 
-  useEffect(() => {
-    console.log("useEffect");
-  }, []);
+  useEffect(() => {}, []);
+
+  const onClickAddComment = (e) => {
+    e.preventDefault();
+    if (content === "") {
+      return alert("내용을 입력해주세요.");
+    }
+    //댓글달기 인풋창이 빈 값일 때는 내용입력요청 알림창 뜨기
+    dispatch(postComment({ postId, content }));
+    setContent("");
+    commentInput.current.value = ""; // 댓글달기를 완료하면 인풋값 없애기
+  };
 
   return (
     <>
       <StCommentLayout>
-        <InputBox
-          name="content"
-          placeholder={"댓글 내용( 100자 이내 )"}
-          max={100}
+        <StInput
           required
-          value={comment.content}
+          maxLength={100}
+          placeholder={"댓글 내용( 100자 이내 )"}
           onChange={onChangeComment}
-        />
-
+          ref={commentInput}
+        ></StInput>
         <div>
           <Button
             type="button"
             buttonText={"댓글달기"}
-            action={onclickAddComment}
+            action={onClickAddComment}
           />
         </div>
       </StCommentLayout>
@@ -67,15 +56,19 @@ function CommentPost() {
 export default CommentPost;
 
 const StCommentLayout = styled.div`
-  /* background-color: aliceblue; */
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  /* flex-direction: row; */
 
-  max-width: 800px;
-  min-width: 500px;
-  min-height: 10vh;
+  border: 1px solid #eee;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+`;
+
+const StInput = styled.input`
   padding: 10px 10px;
-  margin: 50px 50px 20px 50px;
+  flex: 1;
+  outline: none;
+  border: none;
 `;

@@ -2,9 +2,11 @@ import axios from "axios";
 
 //토큰값 구하기
 let x, USER_TOKEN;
+
+
 //axios 인스턴스
 const api = axios.create({
-  baseURL: process.env.REACT_APP_DB_URL,
+  baseURL: "http://taesik.shop/api/",
   timeout: 2000,
 })
 
@@ -26,12 +28,11 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-const apis = {
-  getPosts: () => api.get("/posts"),
-  getMyPosts: (page)=> api.get(`/posts/myposts/${page}`),
-  postPosts: (posts) => api.post("/posts", {...posts}),
-  editPosts: (posts) => api.put(`/posts/${posts.id}`, posts),
-  deletePosts: (postId) => api.delete(`/posts/${postId}`)
+const CommentApis = {
+  getComment: (postId) => api.get(`/posts/${postId}`),
+  postComment: ({content, postId}) => api.post(`/posts/${postId}/comment`, {content}),
+  editComment: ({content, postId}) => api.put(`/posts/${postId}/commentId`, {content}),
+  deleteComment: ({content, postId, commentId}) => api.delete(`/posts/${postId}/${commentId}`)
 }
 
-export default apis
+export default CommentApis

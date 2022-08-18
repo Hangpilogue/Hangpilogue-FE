@@ -1,39 +1,32 @@
 //src/redux/modules/detail
 
-
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
 
 export const getDetail = createAsyncThunk("GET_DETAIL", async (id) => {
   try {
-    const response = await axios.get(`http://localhost:4000/posts?id=${id}`)
-    console.log(response)
-    return response.data
-
+    const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
+    console.log(response);
+    return response.data;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-})
-
+});
 
 // reducer detailSlice
 export const detailSlice = createSlice({
   name: "detail",
   initialState: {
-    posts: []
+    posts: [],
   },
   reducers: {},
   extraReducers: {
-    [getDetail.fulfilled]: (state, {payload}) => [...payload],
-  }
+    [getDetail.fulfilled]: (state, { payload }) => [...payload],
+  },
 });
 
 export const {} = detailSlice.actions;
 export default detailSlice.reducer;
-
-
-
 
 // const axios = require('axios');
 //axios.<method>는 이제 자동 완성과 파라미터 타이핑을 제공합니다.
@@ -66,7 +59,7 @@ export default detailSlice.reducer;
 //   })
 //   .then(function () {
 //     // 항상 실행되는 영역
-//   });  
+//   });
 
 // // async/await 사용을 원한다면, 함수 외부에 `async` 키워드를 추가하세요.
 // async function getUser() {
@@ -77,4 +70,3 @@ export default detailSlice.reducer;
 //     console.error(error);
 //   }
 // }
-

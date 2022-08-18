@@ -17,10 +17,10 @@ function InputBox(props) {
 
   return (
     <TextInputBox>
-      <label htmlFor={name}>
+      {/* <label htmlFor={name}>
         {title}
         {required}
-      </label>
+      </label> */}
       <input
         type="text"
         placeholder={`${placeholder}`}
@@ -28,6 +28,7 @@ function InputBox(props) {
         maxLength={max}
         minLength={min}
         required={required}
+        ref={useRef}
         onChange={onChange}
       ></input>
     </TextInputBox>

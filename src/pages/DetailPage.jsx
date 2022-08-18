@@ -1,22 +1,25 @@
 //src.pages.DetailPage.jsx
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
 import DetailPost from "../components/detail/DetailPost";
 import Comment from "../components/detail/Comment";
 import CommentPost from "../components/detail/CommentPost";
+import styled from "styled-components";
 
 function DetailPage() {
   return (
     <>
-      <div>
+      <StDetailPage>
         <DetailPost />
         <CommentPost />
         <Comment />
-      </div>
+      </StDetailPage>
     </>
   );
 }
+
+const StDetailPage = styled.div`
+  width: 600px;
+  margin: 0 auto;
+`
 
 export default DetailPage;

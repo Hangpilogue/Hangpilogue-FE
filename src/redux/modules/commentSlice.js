@@ -1,13 +1,13 @@
 //src/redux/modules/detail
 
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import CommentApis from "../../shared/commentRequest";
 
 
-export const _getCommentPostList = createAsyncThunk("GET_COMMENT_POST_LIST", async (id) => {
+
+export const getComment = createAsyncThunk("GET_COMMENT", async (postId) => {
   try {
-    const response = await axios.get(`http://localhost:4000/comment?postId=${id}`)
+    const response = await CommentApis.getComment(postId)
     // console.log(response)
     return response.data
   } catch (err) {
@@ -16,109 +16,136 @@ export const _getCommentPostList = createAsyncThunk("GET_COMMENT_POST_LIST", asy
 })
 
 
-export const _addComment = createAsyncThunk("ADD_COMMENT", async (newCommentList) => {
-  try {
-    const response = await axios.get(`http://localhost:4000/comment?postId=${newCommentList.postId}`,newCommentList)
-    // console.log(response)
-    return response.data
-  } catch (err) {
-    console.log(err)
-  }
-})
-
-
-export const _updateComment = createAsyncThunk("UPDATE_COMMENT",async (arg, thunkAPI) => {
+export const postComment = createAsyncThunk(
+  "POST_COMMENT",
+  async ({ content, postId }) => {
+    // console.log(content)
     try {
-      axios.patch(`http://localhost:4000/comment?${arg.id}`, arg);
-      return thunkAPI.fulfillWithValue(arg);
+      const response = await CommentApis.postComment({ content, postId });
+      console.log(response.config.data)
+      // return response.data //true
+      // console.log(content);
+      return response.config.data;
+      // console.log(comments) //리턴하면 함수끝남
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      console.log(err);
     }
   }
 );
 
-export const _deleteComment = createAsyncThunk("DELETE_COMMENT",async (arg, thunkAPI) => {
+export const editComment = createAsyncThunk("EDIT_COMMENT", async (post) => {
+  try {
+    const response = await CommentApis.editComment(post);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+export const deleteComment = createAsyncThunk(
+  "DELETE_COMMENT",
+  async (commentId) => {
     try {
-      await axios.delete(`http://localhost:4000/comments/${arg}`);
-      return thunkAPI.fulfillWithValue(arg);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.code);
+      const response = await CommentApis.deleteComment(commentId)
+      console.log(response)
+      return response.data;
+    } catch (err) {
+      console.log(err);
     }
   }
 );
 
+// const initialState = "";
 
-const initialState = "";
-
+const initialState = {
+  comments: {
+    data: [
+      {
+        content: "",
+        nickname: "",
+        id: 0,
+        postId: 0,
+      },
+    ],
+    isLoading: false,
+    error: null,
+  },
+  commentsPostId: {
+    data: [],
+    isLoading: false,
+    error: null,
+  },
+};
 
 // reducer counterSlice
 export const commentSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {
-    clearComment: (state) => {
-      state.data.content = "";
-    }
-  },
+  reducers: {},
   extraReducers: {
     // [_getCommentPostList.fulfilled] : (state, {payload} ) => [...payload],
     // [_addComment.fulfilled] : (state, {payload} ) => [...state,payload],
 
     // 댓글 조회 (postID)
-    [_getCommentPostList.pending]: (state) => {
-      // state.commentsPostId.isLoading = true;
+    [getComment.pending]: (state) => {
+      state.commentsPostId.isLoading = true;
     },
-    [_getCommentPostList.fulfilled]: (state, action) => {
-      // state.commentsPostId.isLoading = false;
+    [getComment.fulfilled]: (state, action) => {
+      state.commentsPostId.isLoading = false;
       state.commentsPostId.data = action.payload;
     },
-    [_getCommentPostList.rejected]: (state, action) => {
-      // state.commentsPostId.isLoading = false;
+    [getComment.rejected]: (state, action) => {
+      state.commentsPostId.isLoading = false;
       state.commentsPostId.error = action.payload;
     },
 
     // 댓글 추가
-    [_addComment.fulfilled]: (state, action) => {
-      // state.commentsPostId.isLoading = false;
-      state.commentsPostId.data.push(action.payload);
+    [postComment.pending]: (state) => {
+      state.commentsPostId.isLoading = true;
     },
-    [_addComment.rejected]: (state, action) => {
-      // state.commentsPostId.isLoading = false;
-      state.commentsPostId.error = action.payload;
-    },
-    [_addComment.pending]: (state) => {
-      // state.commentsPostId.isLoading = true;
+    [postComment.fulfilled]: (state, action) => {
+      state.commentsPostId.isLoading = false;
+      // state.commentsPostId.data.push(action.payload);
+      //react에서는 push X => 원본배열 망가뜨림
+      // console.log(state)
+      // console.log(action.payload)
+      state.comments.data=[...state.comments.data, action.payload]
     },
 
-    
+    [postComment.rejected]: (state, action) => {
+      state.commentsPostId.isLoading = false;
+      // state.commentsPostId.error = action.payload;
+      // state.isLoading = true
+      state.status = "rejected";
+    },
+
     // 댓글 수정
-    [_updateComment.pending]: (state) => {},
-    [_updateComment.fulfilled]: (state, action) => {
+    [editComment.pending]: (state) => {},
+    [editComment.fulfilled]: (state, action) => {
       const target = state.commentsPostId.data.findIndex(
         (comment) => comment.postId === action.payload.id
       );
       state.commentsPostId.data.splice(target, 1, action.payload);
     },
-    [_updateComment.rejected]: () => {},
+    [editComment.rejected]: () => {},
 
     // 댓글 삭제
-    [_deleteComment.pending]: (state) => {
-      // state.commentsPostId.isLoading = true;
+    [deleteComment.pending]: (state) => {
+      state.commentsPostId.isLoading = true;
     },
-    [_deleteComment.fulfilled]: (state, action) => {
-      // state.commentsPostId.isLoading = false;
+    [deleteComment.fulfilled]: (state, action) => {
+      state.commentsPostId.isLoading = false;
       const target = state.commentsPostId.data.findIndex(
         (comment) => comment.id === action.payload
       );
       state.commentsPostId.data.splice(target, 1);
     },
-    [_deleteComment.rejected]: (state, action) => {
-      // state.commentsPostId.isLoading = false;
+    [deleteComment.rejected]: (state, action) => {
+      state.commentsPostId.isLoading = false;
       state.commentsPostId.error = action.payload;
     },
-  }
+  },
 });
 
-export const { clearComment } = commentSlice.actions;
+export const { } = commentSlice.actions;
 export default commentSlice.reducer;
-
