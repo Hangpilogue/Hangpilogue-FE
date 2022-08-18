@@ -67,7 +67,7 @@ function LogInPage() {
         dispatch(logIn());
         // document.cookie = `token=${token}`;
         // dispatch(setLogin());
-        dispatch(logIn())
+        dispatch(logIn());
         navigate("/");
       })
       .catch((res) => {
@@ -79,7 +79,9 @@ function LogInPage() {
 
   return (
     <div>
-      <StImage />
+      <StDiv>
+        <StImg alt="totoro" src="img/totoro.png.png" />
+      </StDiv>
       <div
         style={{
           display: "flex",
@@ -134,13 +136,23 @@ function LogInPage() {
 
 export default LogInPage;
 
-const StImage = styled.div`
-  background-image: url("http://jphollic.com/data/editor/goods/1/2020/03/1793_15843466948824.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
+// const StImage = styled.div`
+//   background-image: src("images/totoro.png");
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   width: 500px;
+//   height: 350px;
+//   margin: auto;
+// `;
+const StImg = styled.img`
   width: 500px;
   height: 350px;
   margin: auto;
+  background-size: contain;
+`;
+const StDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 const StInput = styled.input`
   width: 300px;
