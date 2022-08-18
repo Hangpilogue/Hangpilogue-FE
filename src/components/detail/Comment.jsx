@@ -100,18 +100,22 @@ function Comment() {
 export default Comment;
 
 const StCommentList = styled.div`
-  background-color: aliceblue;
   height: 350px;
   overflow: auto;
-  margin: 50px;
 
   display: flex; //블럭속성을 풀어줌
   flex-direction: column; //세로정렬
+  border: 1px solid #eee;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 20px;
+  margin-bottom: 20px;
 
   .containerBox {
     display: flex;
     justify-content: space-between; //코멘트와 버튼 사이를 벌려줌
     padding: 20px;
+    border: 1px solid #eee;
+    margin: 10px 0;
   }
 
   .contentBox {

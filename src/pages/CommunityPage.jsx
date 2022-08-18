@@ -1,36 +1,46 @@
 import styled from "styled-components";
 import CommunityList from "../components/community/CommunityList";
-import { useDispatch, useSelector } from "react-redux";
-import { getPosts } from "../redux/modules/postSlice";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getPosts} from "../redux/modules/postSlice";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import apis from "../shared/Request";
 
 function CommunityPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { posts, isLoading, status } = useSelector((state) => state.postSlice);
-  const { isLogin, token } = useSelector((state) => state.tokenSlice);
+  const {isLogin, token} = useSelector((state) => state.tokenSlice);
   const [searchWord, setSearchWord] = useState("");
 
-  let [list, setList] = useState([]);
+  const [list, setList] = useState([])
 
   const onChangeSearchWord = (e) => {
     setSearchWord(e.target.value);
   };
 
+
   //검색어 필터
   const onSearchHandler = () => {
     setList(
-      posts.filter((data) => {
+      list.filter((data) => {
         return data.title.includes(searchWord);
       })
     );
   };
 
+
   useEffect(() => {
-    dispatch(getPosts()).then((res) => {
-      setList(res.payload);
-    });
+    const getPosts = async () => {
+      try {
+        const response = await apis.getPosts();
+        const result = response.data.postlists
+        return setList(result);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPosts()
   }, []);
 
   const goPost = () => {
@@ -43,39 +53,32 @@ function CommunityPage() {
     }
   };
 
-  if (isLoading === true) {
-    return (
-      <div>
-        로딩중입니다
-        <p>{status}</p>
-      </div>
-    );
-  } else {
-    return (
-      <div className={"CommunityPage"}>
-        <StBtnBox>
-          <input onChange={onChangeSearchWord} type="text" />
-          <div>
-            <button onClick={onSearchHandler}>게시글찾기</button>
-            <button
-              onClick={() => {
-                isLogin ? goPost() : alert("로그인이 필요합니다");
-              }}
-            >
-              추가하기
-            </button>
-          </div>
-        </StBtnBox>
+  return (
+    <div className={"CommunityPage"}>
+      <StBtnBox>
+        <input onChange={onChangeSearchWord} type="text"/>
         <div>
-          <StListUl>
-            {list.map((data) => (
-              <CommunityList {...data} key={data.postId} />
-            ))}
-          </StListUl>
+          <button onClick={onSearchHandler}>게시글찾기</button>
+          <button
+            onClick={() => {
+              isLogin ? goPost() : alert("로그인이 필요합니다");
+            }}
+          >
+            추가하기
+          </button>
         </div>
+      </StBtnBox>
+      <div>
+        <StListUl>
+          {
+            list.map((data) => {
+              return <CommunityList {...data} key={data.postId}/>
+            })
+          }
+        </StListUl>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const StBtnBox = styled.div`

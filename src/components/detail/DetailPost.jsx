@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 import Button from "../common/Button";
 
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { getDetail } from "../../redux/modules/detailSlice";
-import { getPosts, deletePosts } from "../../redux/modules/postSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import {useEffect, useState} from "react";
+import {getDetail} from "../../redux/modules/detailSlice";
+import {getPosts, deletePosts} from "../../redux/modules/postSlice";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
 function DetailPost() {
@@ -16,7 +16,7 @@ function DetailPost() {
   // console.log(title)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { postId } = useParams(); // 게시물 ID받아오기
+  const {postId} = useParams(); // 게시물 ID받아오기
   // console.log(postId);
   const postList = useSelector((state) => state.postSlice.posts[postId]);
   // console.log(postList);
@@ -41,7 +41,7 @@ function DetailPost() {
 
   const onClickDeleteButton = () => {
     dispatch(deletePosts(postId));
-    navigate(-1, { replace: false });
+    navigate(-1, {replace: false});
   };
 
   return (
@@ -49,28 +49,31 @@ function DetailPost() {
       <DetailLayout>
         <div className="container">
           <div className="titleContainer">
-            <h1> {detailList.title} </h1>
-            <span> 작성자 : {detailList.nickname} </span>
-            <hr></hr>
-            <span> {postId}번째 게시물 </span>
+            <div className="titleContainerWrapper">
+              <h1> {detailList.title} </h1>
+              <span> 작성자 : {detailList.nickname} </span>
+            </div>
           </div>
           <div className="buttonContainer">
-            <Button
-              type="button"
-              buttonText={"수정하기"}
-              action={onClickEditButton}
-            />
-            <Button
-              type="button"
-              buttonText={"삭제하기"}
-              action={onClickDeleteButton}
-            />
+            <span> {postId}번째 게시물 </span>
+            <div className="buttonContainerWrapper">
+              <Button
+                type="button"
+                buttonText={"수정하기"}
+                action={onClickEditButton}
+              />
+              <Button
+                type="button"
+                buttonText={"삭제하기"}
+                action={onClickDeleteButton}
+              />
+            </div>
           </div>
         </div>
 
         <div className="imageContainer">
           <div>
-            <img src={detailList.img} alt="?" />
+            <img src={detailList.img} alt="?"/>
           </div>
         </div>
         <div className="textContainer">
@@ -84,39 +87,58 @@ function DetailPost() {
 export default DetailPost;
 
 const DetailLayout = styled.div`
-  /* background-color: aliceblue; */
-  border: 2px solid #aaa;
-  border-radius: 4px;
+  border-radius: 10px;
 
-  max-width: 800px;
-  min-width: 500px;
-  min-height: 80vh;
-  padding: 50px 20px;
-  margin: 50px;
 
   .container {
+    border: 1px solid #eee;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .titleContainer {
+    font-size: 18px;
+    color: #777;
+    font-weight: 700;
+  }
+
+  .titleContainerWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  .buttonContainer {
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-
-  .titleContainer {
-    /* flex-direction: column;
-    justify-content: center; */
-  }
-  .buttonContainer {
+  
+  .buttonContainerWrapper {
     display: flex;
+    & button {
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   .imageContainer {
     /* border: 2px solid #aaa;
     border-radius: 4px; */
 
-    max-width: 500px;
-    min-width: 300px;
-    min-height: 40vh;
+    border: 1px solid #eee;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 20px;
+    margin-bottom: 20px;
 
-    margin: 50px auto;
+    width: 100%;
+    min-height: 40vh;
+    border-radius: 5px;
+    overflow: hidden;
     & img {
       width: 100%;
       height: 40vh;
@@ -125,13 +147,12 @@ const DetailLayout = styled.div`
   }
 
   .textContainer {
-    border: 2px solid #aaa;
-    border-radius: 4px;
 
-    max-width: 500px;
-    min-width: 300px;
-    min-height: 20vh;
-    padding: 50px 20px;
-    margin: 50px auto;
+    border: 1px solid #eee;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    height: 180px;
   }
 `;

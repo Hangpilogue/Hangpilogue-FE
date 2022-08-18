@@ -1,6 +1,6 @@
 //src/components/posts/CommentPost
 
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -17,6 +17,7 @@ import InputBox from "../common/InputBox";
 function CommentPost() {
   const dispatch = useDispatch();
   const { postId } = useParams();
+  const {commentInput} = useRef()
 
   const [content, setContent] = useState("");
 
@@ -46,15 +47,13 @@ function CommentPost() {
   return (
     <>
       <StCommentLayout>
-        <InputBox
-          name="content"
-          placeholder={"댓글 내용( 100자 이내 )"}
-          max={100}
+        <StInput
           required
-          value={content}
+          maxLength={100}
+          placeholder={"댓글 내용( 100자 이내 )"}
           onChange={onChangeComment}
-        />
-
+          ref={commentInput}
+        ></StInput>
         <div>
           <Button
             type="button"
@@ -72,13 +71,19 @@ export default CommentPost;
 const StCommentLayout = styled.div`
   /* background-color: aliceblue; */
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   /* flex-direction: row; */
 
-  max-width: 800px;
-  min-width: 500px;
-  min-height: 10vh;
+  border: 1px solid #eee;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+`;
+
+const StInput = styled.input`
   padding: 10px 10px;
-  margin: 50px 50px 20px 50px;
+  flex: 1;
+  outline: none;
+  border: none;
 `;

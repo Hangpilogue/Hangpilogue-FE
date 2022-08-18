@@ -1,10 +1,12 @@
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import MyPageTableRow from "../components/myPage/MyPageTableRow";
-import { useEffect, useState } from "react";
-import { getMyPosts } from "../redux/modules/postSlice";
-import { useNavigate } from "react-router-dom";
-import { logIn } from "../redux/modules/tokenSlice";
+import {useEffect, useState} from "react";
+import {getMyPosts} from "../redux/modules/postSlice";
+import {useNavigate} from "react-router-dom";
+import {logIn} from "../redux/modules/tokenSlice";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import apis from "../shared/Request";
 
 function MyPage() {
   const dispatch = useDispatch();
@@ -12,7 +14,11 @@ function MyPage() {
   const navigate = useNavigate();
   // const [list,setList] = useState([])
 
-  const { token } = useSelector((state) => state.tokenSlice);
+  const [allList, setAllList] = useState([])
+  let [currentList, setCurrentList] = useState([])
+  const [currentPage, setCurrentPage] = useState([])
+
+  const {token} = useSelector((state) => state.tokenSlice);
   if (!token) {
     alert("로그인이 필요한 기능입니다");
     navigate("/");
@@ -22,36 +28,101 @@ function MyPage() {
     if (token) {
       dispatch(logIn());
     }
-  }, []);
+  }, [logIn]);
+
+  const [page, setPage] = useState(1)
+
+  const onPageMove = async (data) => {
+    let lastIndex = data*10
+    setCurrentList(allList.slice(lastIndex-10,lastIndex))
+    console.log(data)
+  }
+
+  const onNext = () => {
+    setPage(6)
+    const getMyPosts = async () => {
+      try {
+        const response = await apis.getMyPosts(page)
+        setCurrentPage(response.data.mypostlists.currentPages)
+        setAllList(response.data.mypostlists.mypage)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMyPosts()
+  }
+
+  const onPrev = () => {
+    console.log(currentPage)
+    setPage(1)
+    const getMyPosts = async () => {
+      try {
+        const response = await apis.getMyPosts(page)
+        setCurrentPage(response.data.mypostlists.currentPages)
+        setAllList(response.data.mypostlists.mypage)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMyPosts()
+  }
 
   useEffect(() => {
-    dispatch(getMyPosts());
+    const getMyPosts = async () => {
+      try {
+        const response = await apis.getMyPosts(page)
+        setCurrentPage(response.data.mypostlists.currentPages)
+        setAllList(response.data.mypostlists.mypage)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMyPosts()
   }, []);
-  const list = useSelector((state) => state.postSlice.myPosts);
-  console.log(list);
+  useEffect(()=> {
+    if(page===1) {
+      setCurrentList(allList.slice(0,10))
+    }
+  },[allList])
+
 
   const goPost = () => {
     navigate("/post");
   };
-
   return (
     <StMyPage>
       <div className="tableWrapper">
         <table>
           <thead>
-            <tr>
-              <td>No</td>
-              <td>제목</td>
-              <td>글쓴이</td>
-              <td>작성일</td>
-            </tr>
+          <tr>
+            <td>No</td>
+            <td>제목</td>
+            <td>글쓴이</td>
+            <td>작성일</td>
+          </tr>
           </thead>
           <tbody>
-            {list.map((data) => (
-              <MyPageTableRow {...data} key={data.postId} />
-            ))}
+          {currentList.map((data) => (
+            <MyPageTableRow {...data} key={data.postId}/>
+          ))}
           </tbody>
         </table>
+      </div>
+      <div className="pagination">
+        <ol>
+          <button onClick={onPrev}>이전</button>
+          {currentPage.map((data, i) => (
+            <li key={i}>
+              <button onClick={() => {
+                onPageMove(i+1)
+              }}>
+                {data}
+              </button>
+            </li>
+          ))}
+          <button onClick={onNext}>다음</button>
+        </ol>
+
       </div>
       <button onClick={goPost}>글쓰기</button>
     </StMyPage>
@@ -65,9 +136,11 @@ const StMyPage = styled.div`
   margin-top: 100px;
   align-items: center;
   flex-direction: column;
+
   .tableWrapper {
     width: 100%;
   }
+
   & table {
     width: 100%;
     border-top: 1px solid black;
@@ -91,6 +164,7 @@ const StMyPage = styled.div`
   & td {
     padding: 10px 20px;
     border-bottom: 1px solid #ccc;
+
     &:first-child {
       width: 10%;
       text-align: center;
@@ -113,14 +187,27 @@ const StMyPage = styled.div`
     }
   }
 
+  ol {
+    list-style: none;
+    display: flex;
+
+    & li {
+      margin: 0 10px;
+    }
+  }
+
   & button {
     margin-top: 30px;
     padding: 10px 30px;
-    color: white;
     border-radius: 5px;
-    border: none;
-    background-color: black;
+    border: 1px solid #eee;
     cursor: pointer;
+
+    &:hover {
+      border: 1px solid black;
+      color: white;
+      background-color: black;
+    }
   }
 `;
 

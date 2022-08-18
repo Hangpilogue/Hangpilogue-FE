@@ -5,6 +5,8 @@ import {useEffect, useRef, useState} from "react";
 import {editPosts, getPosts, postPosts} from "../../redux/modules/postSlice";
 import {storage} from "../../shared/firebase";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import apis from "../../shared/Request";
 
 
 
@@ -14,8 +16,8 @@ const PostEditor = ({isEdit, originData}) => {
   const fileLinkRef = useRef(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  // const isLoading = useSelector(state => state.postSlice.isLoading)
   const {isLoading, status} = useSelector(state => state.postSlice)
+  const {isLogin, token} = useSelector(state => state.tokenSlice)
   //미리보기
   const [previewImg, setPreviewImg] = useState("https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png")
   //파일 이름 placeholder
@@ -24,7 +26,7 @@ const PostEditor = ({isEdit, originData}) => {
     title: "",
     content: "",
     nickname: "",
-    img:previewImg
+    img:previewImg,
   })
 
   useEffect(()=> {
@@ -52,18 +54,12 @@ const PostEditor = ({isEdit, originData}) => {
   const handleFileOnChange =async (event) => {
     event.preventDefault();
     let reader = new FileReader()
-
-
     const uploaded_file = await uploadBytes(ref(storage,`images/${event.target.files[0].name}`),
       event.target.files[0])
-
     console.log(uploaded_file);
-
     const fileUrl = await getDownloadURL(uploaded_file.ref)
     console.log(fileUrl)
-
     fileLinkRef.current = {url:fileUrl}
-
     let file = event.target.files[0]
     setPostFile(event.target.files[0])
     reader.onloadend = () => {
@@ -76,10 +72,32 @@ const PostEditor = ({isEdit, originData}) => {
     reader.readAsDataURL(file)
   }
 
-  console.log(posts)
+  const editPosts = async (post) => {
+    try {
+      const response = await apis.editPosts(post);
+      return post;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const postPosts = async (post) => {
+    try {
+      const response = await apis.postPosts(post);
+      return post;
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
 
 
   const onSubmitHandler = () => {
+    if(!token) {
+      alert("로그인이 필요한 기능입니다")
+      navigate("/", {replace:false})
+      return
+    }
+
     for (let i = 0; i < inputs.current.length; i++) {
       if(inputs.current[i].value.length <1) {
         alert("빈칸이 있습니다.")
@@ -89,28 +107,28 @@ const PostEditor = ({isEdit, originData}) => {
     if(uploadImage.current.value<1) {
       if(window.confirm("이미지 업로드 안할꺼야?")) {
         if(isEdit) {
-          dispatch(editPosts(posts))
-          dispatch(getPosts())
-          alert("수정 완료!")
-          navigate("/")
+          editPosts(posts).then((res) => {
+            alert("수정 완료!")
+            navigate("/")
+          })
         } else {
-          dispatch(postPosts(posts))
-          dispatch(getPosts())
-          alert("포스팅 완료!")
-          navigate("/")
+          postPosts(posts).then((res) => {
+            alert("포스팅 완료!")
+            navigate("/")
+          })
         }
       }
     } else{
       if(isEdit) {
-        dispatch(editPosts(posts))
-        dispatch(getPosts())
-        alert("수정 완료!")
-        navigate("/")
+        editPosts(posts).then((res) => {
+          alert("수정 완료!")
+          navigate("/")
+        })
       } else {
-        dispatch(postPosts(posts))
-        dispatch(getPosts())
-        alert("포스팅 완료!")
-        navigate("/")
+        postPosts(posts).then((res) => {
+          alert("포스팅 완료!")
+          navigate("/")
+        })
       }
     }
   }
