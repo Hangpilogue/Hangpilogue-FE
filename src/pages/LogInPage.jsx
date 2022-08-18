@@ -35,24 +35,6 @@ function LogInPage() {
     setLoginData({ ...loginData, password: e.target.value });
   };
   const onSubmit = async () => {
-    if(userId==="") {
-      alert("아이디가 빈칸이야")
-      return
-    }
-    if(password === "") {
-      alert("비밀번호가 빈칸이야")
-      return
-    }
-    if (userId !== "" && password !== "") {
-      if (userIdError === true && passwordError === true) {
-        alert("양식에 맞게 입력해");
-        return;
-      }
-    }
-    if(userIdError===false) {
-      alert("아이디 양식이 틀렸어");
-      return;
-    }
     axios
       .post("http://taesik.shop/api/user/login", loginData)
       .then((result) => {

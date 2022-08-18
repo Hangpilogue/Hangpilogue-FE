@@ -95,6 +95,8 @@ const RegisterPage = () => {
       .catch((res) => {
         if (res.response.status === 409) {
           alert("이미 존재하는 이메일이야");
+        }else if (res.response.status === 400) {
+          alert("이메일형식이 아니야");
         }
       });
   };
