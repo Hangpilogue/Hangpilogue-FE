@@ -39,9 +39,6 @@ function Header(props) {
             >
               포스트
             </StNavLi>
-            <StNavLi onClick={() => navigate("/detail/:postId")}>
-              디테일
-            </StNavLi>
             <StNavLi
               onClick={() => {
                 if (isLogin) {

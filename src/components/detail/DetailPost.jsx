@@ -81,12 +81,6 @@ function DetailPost() {
 export default DetailPost;
 
 const DetailLayout = styled.div`
-
-  border: 2px solid #aaa;
-  border-radius: 4px;
-
-
-
   .container {
     border: 1px solid #eee;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;

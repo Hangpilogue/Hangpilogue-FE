@@ -7,7 +7,6 @@ import { postComment } from "../../redux/modules/commentSlice";
 
 import styled from "styled-components";
 import Button from "../common/Button";
-import { useRef } from "react";
 
 function CommentPost() {
   const dispatch = useDispatch();
@@ -72,9 +71,4 @@ const StInput = styled.input`
   flex: 1;
   outline: none;
   border: none;
-`;
-
-const StInput = styled.input`
-  padding: 10px 10px;
-  width: 500px;
 `;
