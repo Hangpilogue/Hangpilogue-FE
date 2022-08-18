@@ -12,6 +12,7 @@ import apis from "../../shared/Request";
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   try {
     const response = await apis.getPosts();
+    console.log(response.data.postlists)
     return response.data.postlists;
   } catch (err) {
     console.log(err);
@@ -30,7 +31,6 @@ export const postPosts = createAsyncThunk("POST_POSTS", async (post) => {
 export const editPosts = createAsyncThunk("EDIT_POSTS", async (post) => {
   try {
     const response = await apis.editPosts(post);
-    console.log(post);
     return post;
   } catch (err) {
     console.log(err);
@@ -58,7 +58,6 @@ export const getMyPosts = createAsyncThunk("GET_MY_POSTS", async () => {
   }
 });
 
-// export const getMyPosts = createSlice()
 
 export const postSlice = createSlice({
   name: "post",
@@ -66,9 +65,7 @@ export const postSlice = createSlice({
     isLoading: false,
     status: "Welcome",
     posts: [],
-
     myPosts: [],
-
     // playSounds
   },
   reducers: {},
@@ -77,7 +74,6 @@ export const postSlice = createSlice({
       state.isLoading = false;
       state.status = "fulfilled";
       state.posts = [...state.posts, action.payload];
-      console.log(state.posts);
     },
     [postPosts.pending]: (state, action) => {
       state.isLoading = true;

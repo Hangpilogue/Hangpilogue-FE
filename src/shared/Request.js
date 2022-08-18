@@ -2,8 +2,6 @@ import axios from "axios";
 
 //토큰값 구하기
 let x, USER_TOKEN;
-
-
 //axios 인스턴스
 const api = axios.create({
   baseURL: process.env.REACT_APP_DB_URL,
@@ -30,7 +28,7 @@ api.interceptors.request.use((config) => {
 
 const apis = {
   getPosts: () => api.get("/posts"),
-  getMyPosts: ()=> api.get(`/posts/myposts`),
+  getMyPosts: (page)=> api.get(`/posts/myposts/${page}`),
   postPosts: (posts) => api.post("/posts", {...posts}),
   editPosts: (posts) => api.put(`/posts/${posts.id}`, posts),
   deletePosts: (postId) => api.delete(`/posts/${postId}`)
