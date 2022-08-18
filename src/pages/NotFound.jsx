@@ -1,10 +1,5 @@
 function NotFound() {
-
-    return (
-        <>
-        NotFound
-        </>
-    );
-};
+  return <>NotFound</>;
+}
 
 export default NotFound;

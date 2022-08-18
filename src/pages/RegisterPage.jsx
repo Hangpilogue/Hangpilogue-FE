@@ -40,7 +40,8 @@ const RegisterPage = () => {
   const [dupnickname, setDupnickname] = useState(false);
 
   const onChangeUserId = (e) => {
-    const userIdRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+    const userIdRegex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/;
     if (!e.target.value || userIdRegex.test(e.target.value))
       setUserIdError(false);
     else setUserIdError(true);
@@ -83,8 +84,12 @@ const RegisterPage = () => {
         if (res.data.result) {
           alert("사용가능한 이메일이야");
           setDupEmail(true);
-        } else {
-          alert("이미 있어");
+        }
+      })
+      .catch((res) => {
+        console.log(res.response.data.result);
+        if (res.response.status === 400) {
+          alert("이미 존재하는 이메일이야");
         }
       });
   };
@@ -95,8 +100,12 @@ const RegisterPage = () => {
         if (res.data.result) {
           alert("사용가능한 닉네임이야");
           setDupnickname(true);
-        } else {
-          alert("이미 있어");
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+        if (res.response.status === 400) {
+          alert("이미 존재하는 닉네임이야");
         }
       });
   };
@@ -136,21 +145,20 @@ const RegisterPage = () => {
       userId !== "" &&
       nickname !== "" &&
       password !== "" &&
-      confirmPassword !== "" &&
-      dupEmail === true &&
-      dupnickname === true
+      confirmPassword !== ""
+      // dupEmail === true &&
+      // dupnickname === true
     ) {
       await axios
         .post("http://taesik.shop/api/user/signup", data)
         .then((response) => {
-          if (response.status === 400) {
-            alert("다시 한 번 확인해봐");
-          } else if (response.data.result === true) {
+          if (response.data.result === true) {
             navigate("/login");
           }
         })
         .catch((response) => {
-          if (response.status === 400) {
+          console.log("catch=", response.response.status);
+          if (response.response.status === 400) {
             alert("다시 한 번 확인해봐");
           }
         });
@@ -184,7 +192,6 @@ const RegisterPage = () => {
       <StInputs>
         <StInput
           placeholder="아이디"
-          type="email"
           value={userId}
           onChange={(e) => {
             onChangeUserId(e);
@@ -219,8 +226,8 @@ const RegisterPage = () => {
         />
         {passwordError && (
           <div style={{ color: "red" }}>
-            영문과 숫자 조합의 8-13자의 비밀번호를 설정해주세요.
-            특수문자(!@#$%^&*)도 사용 가능합니다.
+            영문과 숫자, 특수문자(!@#$%^&*)조합의 8-13자의 비밀번호를
+            설정해주세요.
           </div>
         )}
 

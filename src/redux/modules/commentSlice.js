@@ -1,8 +1,8 @@
 //src/redux/modules/detail
 
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import CommentApis from "../../shared/commentRequest";
+
 
 
 export const getComment = createAsyncThunk("GET_COMMENT", async (postId) => {
@@ -16,38 +16,40 @@ export const getComment = createAsyncThunk("GET_COMMENT", async (postId) => {
 })
 
 
-export const postComment = createAsyncThunk("POST_COMMENT", async ({content, postId}) => {
-  // console.log(postId)
-  try {
-    const response = await CommentApis.postComment({content, postId})
-    // console.log(response)
-    // return response.data //true
-    // console.log(content)
-    return content
-    // console.log(comments) //리턴하면 함수끝남
-
-  } catch (err) {
-    console.log(err)
-  }
-})
-
-
-export const editComment = createAsyncThunk("EDIT_COMMENT",async (post) => {
+export const postComment = createAsyncThunk(
+  "POST_COMMENT",
+  async ({ content, postId }) => {
+    // console.log(postId)
     try {
-      const response = await CommentApis.editComment(post);
-      return response.data
+      const response = await CommentApis.postComment({ content, postId });
+      // console.log(response)
+      // return response.data //true
+      console.log(content);
+      return content;
+      // console.log(comments) //리턴하면 함수끝남
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 );
 
-export const deleteComment = createAsyncThunk("DELETE_COMMENT",async (posts) => {
+export const editComment = createAsyncThunk("EDIT_COMMENT", async (post) => {
+  try {
+    const response = await CommentApis.editComment(post);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+export const deleteComment = createAsyncThunk(
+  "DELETE_COMMENT",
+  async (posts) => {
     try {
       const response = await CommentApis.deleteComment(posts);
-      return response.data
+      return response.data;
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 );
@@ -56,12 +58,14 @@ export const deleteComment = createAsyncThunk("DELETE_COMMENT",async (posts) => 
 
 const initialState = {
   comments: {
-    data: [{
-      content: "",
-      nickname: "",
-      id: 0,
-      postId: 0,
-    },],
+    data: [
+      {
+        content: "",
+        nickname: "",
+        id: 0,
+        postId: 0,
+      },
+    ],
     isLoading: false,
     error: null,
   },
@@ -72,21 +76,19 @@ const initialState = {
   },
 };
 
-
 // reducer counterSlice
 export const commentSlice = createSlice({
   name: "comments",
-  initialState
+  initialState,
   // : {
   //   isLoading:false,
   //   status:"Hello",
   //   comments: [],
   // }
-  ,
   reducers: {
     clearComment: (state) => {
       state.data.content = "";
-    }
+    },
   },
   extraReducers: {
     // [_getCommentPostList.fulfilled] : (state, {payload} ) => [...payload],
@@ -116,16 +118,14 @@ export const commentSlice = createSlice({
       console.log(state.commentsPostId.data)
       
     },
-    
+
     [postComment.rejected]: (state, action) => {
       state.commentsPostId.isLoading = false;
       // state.commentsPostId.error = action.payload;
       // state.isLoading = true
-      state.status = "rejected"
+      state.status = "rejected";
     },
 
-
-    
     // 댓글 수정
     [editComment.pending]: (state) => {},
     [editComment.fulfilled]: (state, action) => {
@@ -151,9 +151,8 @@ export const commentSlice = createSlice({
       state.commentsPostId.isLoading = false;
       state.commentsPostId.error = action.payload;
     },
-  }
+  },
 });
 
 export const { clearComment } = commentSlice.actions;
 export default commentSlice.reducer;
-
