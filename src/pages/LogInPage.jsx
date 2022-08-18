@@ -70,8 +70,10 @@ function LogInPage() {
         dispatch(logIn())
         navigate("/");
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((res) => {
+        if (res.response.status === 401) {
+          alert(res.response.data);
+        }
       });
   };
 
